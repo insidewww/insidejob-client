@@ -4,11 +4,45 @@
 $ijobdark: #353530;
 $ijoblight: #ecedef;
 
+@font-face {
+  font-family: "Insidejob";
+  src:
+    url("../../public/fonts/Apoc-Revelations-Variable[wght].woff2")
+      format("woff2"),
+    url("../../public/fonts/Apoc-Revelations-Variable[wght].woff")
+      format("woff");
+}
+@font-face {
+  font-family: "InsidejobArea";
+  src:
+    url("../../public/fonts/Area-Variable[wght,wdth,INKT,slnt].woff2")
+      format("woff2"),
+    url("../../public/fonts/Area-Variable[wght,wdth,INKT,slnt].woff")
+      format("woff");
+}
+
 html,
 body {
-  font-family: "Times New Roman", Times, serif;
+  font-family: "InsidejobArea", "Times New Roman", Times, serif;
   background-color: $ijoblight;
   color: $ijobdark !important;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Insidejob";
+}
+.font-insidejob {
+  font-family: "Insidejob";
+}
+.font-insidejob-ext {
+  font-family: "InsidejobArea";
+  font-variation-settings:
+    "wdth" 155,
+    "INKT" 1;
 }
 
 a {

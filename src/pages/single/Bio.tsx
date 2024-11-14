@@ -51,14 +51,14 @@ export default function Bio() {
   return (
     <Layout title="Bio" description={statement || undefined}>
       <Col xs={12} md={6} className="mh-100 d-flex flex-column">
-        <h6 className="text-center">Statement</h6>
+        <h6 className="text-center font-insidejob-ext">Statement</h6>
         <div className="h-100 overflow-auto px-md-5">
           {picture && <Image imageref={picture} className="img-fluid pb-4" />}
           {statement && HTMLReactParser(statement)}
         </div>
       </Col>
       <Col xs={12} md={6} className="h-100 d-flex flex-column">
-        <h6 className="text-center">Additional</h6>
+        <h6 className="text-center font-insidejob-ext">Additional</h6>
         <div className="h-100 d-flex flex-column overflow-auto px-md-5">
           <div className="my-auto">{arrayToHtml(additional)}</div>
         </div>

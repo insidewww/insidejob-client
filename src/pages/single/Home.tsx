@@ -32,10 +32,12 @@ export default function Homepage() {
         <Row>
           <Col className="d-flex flex-column align-items-center z-2">
             {homepage_heading && (
-              <h1 className="display-4 mb-3">{homepage_heading}</h1>
+              <h1 className="display-1 mb-3">{homepage_heading}</h1>
             )}{" "}
             {homepage_subheading && (
-              <h2 className="h5 mb-4">{homepage_subheading}</h2>
+              <h2 className="h5 mb-4 font-insidejob-ext">
+                {homepage_subheading}
+              </h2>
             )}{" "}
           </Col>
         </Row>

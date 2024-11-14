@@ -32,8 +32,10 @@ export default function Layout({
         <meta name="author" content={metadata.name} />
       </Helmet>
       <Row id="SinglePageHeader" className="justify-content-center">
-        {title && <h6 className="text-center pb-3">{title}</h6>}{" "}
-      </Row>{" "}
+        {title && (
+          <h6 className="text-center pb-3 font-insidejob-ext">{title}</h6>
+        )}
+      </Row>
       <Row
         id="SinglePageContent"
         className={

@@ -25,7 +25,7 @@ function Header() {
     "d-flex flex-column align-items-center justify-content-center";
 
   return (
-    <header className="position-fixed w-100 top-0 start-0 px-2 z-3">
+    <header className="position-fixed w-100 top-0 start-0 px-2 z-3 font-insidejob-ext">
       <Helmet>
         <title>{artists_name}</title>
         <meta name="author" content={artists_name} />

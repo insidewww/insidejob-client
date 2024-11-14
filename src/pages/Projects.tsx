@@ -89,7 +89,9 @@ export default function Projects() {
         <Layout title="Projects">
           <Col xs={12} md={6} className="d-flex flex-column mh-100 px-md-5">
             <Row>
-              <h6 className="text-center">Selected Projects</h6>
+              <h6 className="text-center font-insidejob-ext">
+                Selected Projects
+              </h6>
             </Row>
             <Row className="my-2">
               <Col>
