@@ -7,18 +7,14 @@ $ijoblight: #ecedef;
 @font-face {
   font-family: "Insidejob";
   src:
-    url("../../public/fonts/Apoc-Revelations-Variable[wght].woff2")
-      format("woff2"),
-    url("../../public/fonts/Apoc-Revelations-Variable[wght].woff")
-      format("woff");
+    url("/fonts/Apoc-Revelations-Variable[wght].woff2") format("woff2"),
+    url("/fonts/Apoc-Revelations-Variable[wght].woff") format("woff");
 }
 @font-face {
   font-family: "InsidejobArea";
   src:
-    url("../../public/fonts/Area-Variable[wght,wdth,INKT,slnt].woff2")
-      format("woff2"),
-    url("../../public/fonts/Area-Variable[wght,wdth,INKT,slnt].woff")
-      format("woff");
+    url("/fonts/Area-Variable[wght,wdth,INKT,slnt].woff2") format("woff2"),
+    url("/fonts/Area-Variable[wght,wdth,INKT,slnt].woff") format("woff");
 }
 
 html,

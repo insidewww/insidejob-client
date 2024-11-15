@@ -29,8 +29,6 @@ function Header() {
       <Helmet>
         <title>{artists_name}</title>
         <meta name="author" content={artists_name} />
-        <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
-        {/* Additional meta links */}
       </Helmet>
 
       <Navbar expand="lg">
@@ -50,6 +48,7 @@ function Header() {
             show={showOffcanvas}
             onHide={handleClose}
             className="insidejob-offcanvas"
+            backdrop={false}
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id="offcanvasNavbarLabel">
