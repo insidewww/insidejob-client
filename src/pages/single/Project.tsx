@@ -71,7 +71,7 @@ export default function Project() {
               <div className="d-flex mt-auto">
                 {" "}
                 <span>Related:&nbsp;</span>
-                <Link to="/projects">All Projects</Link>
+                <Link to="/projects">All Projects{urls && ","}</Link>
                 <span>&nbsp;</span>
                 {urls && urls.length > 0 ? (
                   urls.map((url, index) => (

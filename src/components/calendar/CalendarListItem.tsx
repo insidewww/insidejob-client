@@ -31,7 +31,8 @@ export default function CalendarListItem({ project }: { project: Project }) {
         {/* Check if the project is published and render the internal link */}
         {general.published && general.slug && (
           <Link to={`/projects/${general.slug}`}>
-            <i className="bi bi-link"></i> {/* Internal project link icon */}
+            <i className="bi bi-link p-1 fs-5"></i>{" "}
+            {/* Internal project link icon */}
           </Link>
         )}
 
@@ -39,7 +40,7 @@ export default function CalendarListItem({ project }: { project: Project }) {
         {urls?.map((url) => (
           <span key={url.id}>
             <a href={url.url} target="_blank" rel="noopener noreferrer">
-              <i className="bi bi-box-arrow-up-right"></i>{" "}
+              <i className="bi bi-box-arrow-up-right p-1 fs-5"></i>{" "}
               {/* External link icon */}
             </a>
           </span>
