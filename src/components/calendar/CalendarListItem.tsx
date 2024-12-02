@@ -3,6 +3,7 @@ import { TagSchema, UrlSchema } from "@jakubkanna/labguy-front-schema";
 import { parseDate } from "../../utils/helpers";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
+import HTMLReactParser from "html-react-parser/lib/index";
 
 export default function CalendarListItem({ project }: { project: Project }) {
   const { general, subtitle, start_date, end_date, venue, urls } = project;
@@ -52,9 +53,11 @@ export default function CalendarListItem({ project }: { project: Project }) {
       <Col className="col-12 text-center">
         <h3>{general.title}</h3>
       </Col>
-      <Col className="d-flex gap-2 justify-content-center flex-wrap">
-        <span>{general.tags?.map((tag: TagSchema) => `[${tag.title}] `)}</span>
-        <span>{subtitle}</span>
+      <Col className="d-flex gap-2 justify-content-center align-items-center flex-wrap">
+        <small>
+          {general.tags?.map((tag: TagSchema) => `[${tag.title}] `)}
+        </small>
+        <span> {subtitle && <>{HTMLReactParser(subtitle)} </>} </span>
         <span>{displayDate(start_date, end_date)}</span>
         <span>{venue}</span>
         <span> {displayUrls(urls)} </span>

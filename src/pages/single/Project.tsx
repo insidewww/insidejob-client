@@ -9,6 +9,7 @@ import Layout from "../../components/layout/Layout.";
 import MediaComponent from "../../components/Media";
 import { parseDate } from "../../utils/helpers";
 import { Work } from "../Works";
+import { TagSchema } from "@jakubkanna/labguy-front-schema";
 
 export default function Project() {
   const data = useLoaderData() as ProjectSchema;
@@ -37,49 +38,54 @@ export default function Project() {
     <Layout>
       <>
         <Col xs={12} md={6} className="mh-100 d-flex flex-column overflow-auto">
-          <h1>{general.title}</h1>
-          <div className="d-flex flex-column pt-3 px-3 h-100">
-            {formattedStartDate && (
-              <p>
-                {formattedStartDate}{" "}
-                {formattedEndDate ? "- " + formattedEndDate : "- N/A"}
-              </p>
-            )}
-            {subtitle && <p>{subtitle}</p>}
-            {venue && <p>{venue}</p>}
-            {works && works.length > 0 && (
-              <p>
-                <span>Works: </span>
-                {works.map((w, index) => (
-                  <span key={w.general.slug}>
-                    <Link to={`/works/${w.general.slug}`}>
-                      {w.general.title}
-                    </Link>
-                    {index < works.length - 1 && <span>, </span>}
-                  </span>
-                ))}
-              </p>
-            )}
-            <div className="p-3 p-md-5">
-              {text && <>{HTMLReactParser(text as string)}</>}
-            </div>
-            <div className="d-flex mt-auto">
-              {" "}
-              <span>Related:&nbsp;</span>
-              <Link to="/projects">All Projects</Link>
-              <span>&nbsp;</span>
-              {urls && urls.length > 0 ? (
-                urls.map((url, index) => (
-                  <span key={url.id}>
-                    <Link to={url.url} target="_blank">
-                      {url.title}
-                    </Link>
-                    {index < urls.length - 1 && <span>, </span>}
-                  </span>
-                ))
-              ) : (
-                <p>No related links available.</p>
+          <h1 className="display-2">{general.title}</h1>
+          <div className="px-3">
+            <small>
+              {general.tags?.map((tag: TagSchema) => `[${tag.title}] `)}
+            </small>
+            <div className="d-flex flex-column pt-3 h-100">
+              {formattedStartDate && (
+                <p>
+                  {formattedStartDate}{" "}
+                  {formattedEndDate ? "- " + formattedEndDate : "- N/A"}
+                </p>
               )}
+              {subtitle && <>{HTMLReactParser(subtitle)} </>}
+              {venue && <p>{venue}</p>}
+              {works && works.length > 0 && (
+                <p>
+                  <span>Works: </span>
+                  {works.map((w, index) => (
+                    <span key={w.general.slug}>
+                      <Link to={`/works/${w.general.slug}`}>
+                        {w.general.title}
+                      </Link>
+                      {index < works.length - 1 && <span>, </span>}
+                    </span>
+                  ))}
+                </p>
+              )}
+              <div className="p-3 p-md-5">
+                {text && <>{HTMLReactParser(text as string)}</>}
+              </div>
+              <div className="d-flex mt-auto">
+                {" "}
+                <span>Related:&nbsp;</span>
+                <Link to="/projects">All Projects</Link>
+                <span>&nbsp;</span>
+                {urls && urls.length > 0 ? (
+                  urls.map((url, index) => (
+                    <span key={url.id}>
+                      <Link to={url.url} target="_blank">
+                        {url.title}
+                      </Link>
+                      {index < urls.length - 1 && <span>, </span>}
+                    </span>
+                  ))
+                ) : (
+                  <p>No related links available.</p>
+                )}
+              </div>
             </div>
           </div>
         </Col>
