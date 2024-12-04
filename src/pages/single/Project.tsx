@@ -83,7 +83,7 @@ export default function Project() {
                     </span>
                   ))
                 ) : (
-                  <p>No related links available.</p>
+                  <p></p>
                 )}
               </div>
             </div>
@@ -106,7 +106,7 @@ export default function Project() {
                 </Col>
               ))
             ) : (
-              <p>No works available for this project.</p>
+              <p></p>
             )}
           </Row>
         </Col>

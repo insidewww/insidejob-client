@@ -32,10 +32,16 @@ export default function Projects() {
   );
 
   if (!projects) return null;
+  const isPublic = (proj: Project) => proj.general.published;
 
   // Extract unique years from projects where `end_date.year` is defined
   const projectYears = Array.from(
-    new Set(projects.map((project) => project.end_date?.year).filter(Boolean))
+    new Set(
+      projects
+        .filter((project) => isPublic(project)) // Filter only public projects
+        .map((project) => project.end_date?.year) // Map to end_date.year
+        .filter(Boolean) // Remove undefined or null values
+    )
   ).sort((a, b) => (b || 0) - (a || 0)); // Sort years descending
 
   // Function to filter projects by specific year
@@ -55,9 +61,10 @@ export default function Projects() {
         <Col className="text-end">{year}</Col>
       </Row>
       <Row>
-        {projectsByYear.map((proj) => (
-          <ProjectsListItem key={proj.id} project={proj} />
-        ))}
+        {projectsByYear.map(
+          (proj) =>
+            isPublic(proj) && <ProjectsListItem key={proj.id} project={proj} />
+        )}
       </Row>
     </>
   );

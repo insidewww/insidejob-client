@@ -1,8 +1,7 @@
 import { useContext } from "react";
 import { GeneralContext } from "../../contexts/GeneralContext";
-import { Col, ListGroup, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { UrlSchema } from "@jakubkanna/labguy-front-schema";
-import { Link } from "react-router-dom";
 import Background from "../../components/Background";
 import Layout from "../../components/layout/Layout.";
 
@@ -41,22 +40,24 @@ export default function Homepage() {
             )}{" "}
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <ListGroup
-              horizontal
-              className="justify-content-center"
-              variant="insidejob"
-            >
-              {homepage_urls &&
-                homepage_urls.map((url, key) => (
-                  <ListGroup.Item key={key}>
-                    <Link to={(url as UrlSchema).url} target="_blank">
-                      {(url as UrlSchema).title}
-                    </Link>
-                  </ListGroup.Item>
-                ))}
-            </ListGroup>
+        <Row className="w-100">
+          <Col xs={12} className="d-flex justify-content-center gap-3">
+            {homepage_urls &&
+              homepage_urls.map((url, key) => (
+                <Button
+                  variant={"insidejob"}
+                  onClick={() =>
+                    window.open(
+                      (url as UrlSchema).url,
+                      "_blank",
+                      "noopener,noreferrer"
+                    )
+                  }
+                  key={key}
+                >
+                  <span>{(url as UrlSchema).title}</span>
+                </Button>
+              ))}
           </Col>
         </Row>
       </Col>

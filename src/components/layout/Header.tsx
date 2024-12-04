@@ -61,7 +61,7 @@ function Header() {
             >
               <Nav>
                 <LinkContainer to="calendar">
-                  <Nav.Link onClick={handleClose}>Calendar</Nav.Link>
+                  <Nav.Link onClick={handleClose}>Current</Nav.Link>
                 </LinkContainer>
                 <LinkContainer to="projects">
                   <Nav.Link onClick={handleClose}>Selected Projects</Nav.Link>

@@ -32,7 +32,7 @@ export default function Calendar() {
     <Layout title="Calendar">
       <>
         <Col xs={12} md={6} className="mh-100">
-          <h6 className="text-center font-insidejob-ext">Current</h6>
+          <h6 className="text-center font-insidejob-ext">Ongoing</h6>
           <ProjectList projects={currentProjects} />
         </Col>
         <Col xs={12} md={6} className="mh-100 ">

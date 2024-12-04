@@ -1,35 +1,47 @@
+$btn-transition:
+  color 0.15s ease-in-out,
+  background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out,
+  box-shadow 0.15s ease-in-out;
+
 .btn-insidejob {
-  background-color: $ijobdark;
+  position: relative;
   color: $ijoblight;
+  background-color: $ijobdark;
+  border-radius: 0;
+  padding-top: 4px !important;
+  padding-bottom: 2px !important;
   border: none;
-  text-transform: uppercase;
-  width: 150px; /* Fixed width for each item */
-  height: 30px; /* Set a height for the octagonal shape */
-  display: flex;
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
-  border-radius: 0 !important;
-  padding-top: 8px;
-  /* Clip-path for octagonal shape */
-  clip-path: polygon(
-    5% 0,
-    95% 0,
-    100% 20%,
-    100% 80%,
-    95% 100%,
-    5% 100%,
-    0% 80%,
-    0% 20%
-  );
+  transition: $btn-transition; /* Transition for the button */
+}
 
-  a {
-    color: $ijoblight;
-    text-decoration: none;
-  }
+.btn-insidejob:hover {
+  background-color: black;
+  color: $ijoblight;
+}
 
-  /* Change background color on hover */
-  &:hover {
-    background-color: black;
-    color: white;
-  }
+.btn-insidejob::after,
+.btn-insidejob::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 20px; /* Width of the trapeze */
+  height: 100%;
+  background-color: $ijobdark;
+  transition: background-color 0.15s ease-in-out; /* Ensure transition is applied to pseudo-elements */
+}
+
+.btn-insidejob::before {
+  left: -4.5px; /* Position the trapeze on the left */
+  clip-path: polygon(25% 0, 0% 25%, 0% 75%, 25% 100%);
+}
+
+.btn-insidejob::after {
+  right: -4.5px; /* Position the trapeze on the right */
+  clip-path: polygon(75% 0, 100% 25%, 100% 75%, 75% 100%);
+}
+
+.btn-insidejob:hover::after,
+.btn-insidejob:hover::before {
+  background-color: black; /* Transition the color of the trapezoids */
 }

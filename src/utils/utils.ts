@@ -1,4 +1,4 @@
-import { Cloudinary } from "@cloudinary/url-gen";
+import { Cloudinary } from "@cloudinary/url-gen/index";
 import { scale } from "@cloudinary/url-gen/actions/resize";
 import { ImageRefSchema } from "@jakubkanna/labguy-front-schema";
 

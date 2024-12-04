@@ -47,7 +47,7 @@ export default function Work() {
               </Col>
             ))
           ) : (
-            <p>No media available for this project.</p>
+            <p></p>
           )}
         </Row>
         {/* Footer Section */}
