@@ -54,9 +54,9 @@ function parseDate(dateObj: { [k: string]: unknown } | null | undefined) {
 
   const { year, month, day, time } = dateObj;
 
-  return `${day}
+  return `${month ? day : ""}
   ${
-    month
+    month !== undefined || null
       ? dayjs()
           .set("month", month as number)
           .format("MMMM")
