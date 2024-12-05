@@ -57,9 +57,7 @@ export default function Project() {
                   <span>Works: </span>
                   {works.map((w, index) => (
                     <span key={w.general.slug}>
-                      <Link to={`/works/${w.general.slug}`}>
-                        {w.general.title}
-                      </Link>
+                      {w.general.title}
                       {index < works.length - 1 && <span>, </span>}
                     </span>
                   ))}
