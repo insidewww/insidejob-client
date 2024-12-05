@@ -29,7 +29,7 @@ export default function Calendar() {
   };
 
   return (
-    <Layout title="Calendar">
+    <Layout title="Current">
       <>
         <Col xs={12} md={6} className="mh-100">
           <h6 className="text-center font-insidejob-ext">Ongoing</h6>

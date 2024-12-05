@@ -1,4 +1,4 @@
-import { useLoaderData, useParams, Outlet } from "react-router-dom";
+import { useLoaderData, useParams, Outlet, Link } from "react-router-dom";
 import {
   GeneralSectionSchema,
   ImageRefSchema,
@@ -7,48 +7,67 @@ import {
   UrlSchema,
 } from "@jakubkanna/labguy-front-schema";
 import { Col, Row } from "react-bootstrap";
-import { Work } from "./Works";
-import { MediaRef, isImage, isMobile } from "../utils/helpers"; // Assuming isImage is imported here
+import { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout.";
 import Image from "../components/Image";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { isImage, isMobile } from "../utils/helpers";
 
 export interface Project extends ProjectSchema {
   general: GeneralSectionSchema & { tags: TagSchema[] };
-  media: MediaRef[];
+  media: ImageRefSchema[];
   urls: UrlSchema[];
-  works: Work[];
+  works: unknown[]; // Replace `unknown` with the actual type if available
 }
+
 function getFirstImage(project: Project) {
   return project.media?.find(isImage);
 }
 
 export default function Projects() {
-  const projects = useLoaderData() as Project[];
+  const allProjects = useLoaderData() as Project[];
   const { slug } = useParams();
-  const [preview, setPreview] = useState<ImageRefSchema | null>(
-    getFirstImage(projects[0]) || null
-  );
 
-  if (!projects) return null;
-  const isPublic = (proj: Project) => proj.general.published;
+  // Consolidated state for preview image and project slug
+  const [preview, setPreview] = useState<{
+    image: ImageRefSchema | null;
+    slug: string | null;
+  }>({ image: null, slug: null });
 
-  // Extract unique years from projects where `end_date.year` is defined
+  useEffect(() => {
+    // Get the filtered list of published projects
+    const filteredProjects = allProjects.filter(
+      (proj) => proj.general.published
+    );
+
+    if (filteredProjects.length > 0) {
+      setPreview({
+        image: getFirstImage(filteredProjects[0]) || null,
+        slug: filteredProjects[0].general.slug || null,
+      });
+    } else {
+      setPreview({ image: null, slug: null });
+    }
+  }, [allProjects]); // Trigger the effect when allProjects changes
+
+  if (!allProjects.length) return null;
+
+  // Extract unique years from filteredProjects and sort in descending order
+  const filteredProjects = allProjects.filter((proj) => proj.general.published);
   const projectYears = Array.from(
     new Set(
-      projects
-        .filter((project) => isPublic(project)) // Filter only public projects
-        .map((project) => project.end_date?.year) // Map to end_date.year
-        .filter(Boolean) // Remove undefined or null values
+      filteredProjects
+        .map((project) => project.end_date?.year ?? 0) // Fallback to 0 if undefined
+        .filter(Boolean)
     )
-  ).sort((a, b) => (b || 0) - (a || 0)); // Sort years descending
+  ).sort((a, b) => (b ?? 0) - (a ?? 0));
 
-  // Function to filter projects by specific year
+  // Group projects by year
   const getProjectsByYear = (year: number) =>
-    projects.filter((project) => project.end_date?.year === year);
+    filteredProjects.filter(
+      (project) => project.end_date?.year === (year ?? 0)
+    );
 
-  // Group (by year) of projects
+  // Group component for a specific year
   const ProjectsGroup = ({
     year,
     projectsByYear,
@@ -61,77 +80,78 @@ export default function Projects() {
         <Col className="text-end">{year}</Col>
       </Row>
       <Row>
-        {projectsByYear.map(
-          (proj) =>
-            isPublic(proj) && <ProjectsListItem key={proj.id} project={proj} />
-        )}
+        {projectsByYear.map((proj) => (
+          <Col key={proj.id}>
+            {" "}
+            <Link
+              to={`/projects/${proj.general.slug}`}
+              onClick={() => console.log(proj.general.slug)}
+            >
+              <ProjectsListItem project={proj} />{" "}
+            </Link>
+          </Col>
+        ))}
       </Row>
     </>
   );
 
-  // List of projects
+  // Individual project list item
   const ProjectsListItem = ({ project }: { project: Project }) => {
-    // Find the first image in project.media
     const firstImage = getFirstImage(project);
 
     return (
       <Row
         className="my-2"
-        onMouseEnter={() => firstImage && setPreview(firstImage)}
+        onMouseEnter={() =>
+          setPreview({
+            image: firstImage || null,
+            slug: project.general.slug as string,
+          })
+        }
       >
-        <Col>
-          <Link to={"/projects/" + project.general.slug}>
-            {project.general.title}
-          </Link>
-        </Col>
+        <Col> {project.general.title} </Col>
       </Row>
     );
   };
 
-  return (
-    <>
-      {slug ? (
-        <Outlet />
-      ) : (
-        <Layout title="Projects">
-          <Col xs={12} md={6} className="d-flex flex-column mh-100 px-md-5">
-            <Row>
-              <h6 className="text-center font-insidejob-ext">
-                Selected Projects
-              </h6>
-            </Row>
-            <Row className="my-2">
-              <Col>
-                <span>Name</span>
-              </Col>
-              <Col className="text-end">
-                <span>Year</span>
-              </Col>
-            </Row>
-            <Row className="flex-grow-1 overflow-auto">
-              <Col className="d-flex flex-column justify-content-end ">
-                {projectYears.map((year) => (
-                  <ProjectsGroup
-                    key={year}
-                    year={year!}
-                    projectsByYear={getProjectsByYear(year!)}
-                  />
-                ))}
-              </Col>
-            </Row>
+  return slug ? (
+    <Outlet />
+  ) : (
+    <Layout title="Projects">
+      <Col xs={12} md={6} className="d-flex flex-column mh-100 px-md-5">
+        <Row>
+          <h6 className="text-center font-insidejob-ext">Selected Projects</h6>
+        </Row>
+        <Row className="my-2">
+          <Col>
+            <span>Name</span>
           </Col>
-          {!isMobile() && (
-            <Col xs={12} md={6} className="mh-100 ">
-              {preview && (
-                <Image
-                  imageref={preview}
-                  className="object-fit-cover h-100 w-100"
-                />
-              )}
-            </Col>
-          )}
-        </Layout>
+          <Col className="text-end">
+            <span>Year</span>
+          </Col>
+        </Row>
+        <Row className="flex-grow-1 overflow-auto">
+          <Col className="d-flex flex-column justify-content-end">
+            {projectYears.map((year) => (
+              <ProjectsGroup
+                key={year}
+                year={year}
+                projectsByYear={getProjectsByYear(year)}
+              />
+            ))}
+          </Col>
+        </Row>
+      </Col>
+      {!isMobile() && preview.image && preview.slug && (
+        <Col xs={12} md={6} className="mh-100">
+          <Link to={`/projects/${preview.slug || "#"}`}>
+            <Image
+              imageref={preview.image}
+              className="object-fit-cover h-100 w-100"
+            />
+          </Link>
+        </Col>
       )}
-    </>
+    </Layout>
   );
 }

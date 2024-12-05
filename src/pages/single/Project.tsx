@@ -93,7 +93,7 @@ export default function Project() {
           {/* Render project media */}
           <Row className="gap-3">
             <Col xs={12}>
-              <MediaComponent media={media} />
+              <MediaComponent media={media} linkImg />
             </Col>
           </Row>
 
