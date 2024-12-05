@@ -52,7 +52,7 @@ export default function CalendarListItem({ project }: { project: Project }) {
   return (
     <Row className="mw-100 py-5">
       <Col className="col-12 text-center">
-        <h3>{general.title}</h3>
+        <h2>{general.title}</h2>
       </Col>
       <Col className="d-flex gap-2 justify-content-center align-items-center flex-wrap">
         <small>
