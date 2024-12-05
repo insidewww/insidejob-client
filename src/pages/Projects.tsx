@@ -1,4 +1,10 @@
-import { useLoaderData, useParams, Outlet, Link } from "react-router-dom";
+import {
+  useLoaderData,
+  useParams,
+  Outlet,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import {
   GeneralSectionSchema,
   ImageRefSchema,
@@ -19,14 +25,10 @@ export interface Project extends ProjectSchema {
   works: unknown[]; // Replace `unknown` with the actual type if available
 }
 
-function getFirstImage(project: Project) {
-  return project.media?.find(isImage);
-}
-
 export default function Projects() {
   const allProjects = useLoaderData() as Project[];
   const { slug } = useParams();
-
+  const navigate = useNavigate();
   // Consolidated state for preview image and project slug
   const [preview, setPreview] = useState<{
     image: ImageRefSchema | null;
@@ -61,11 +63,24 @@ export default function Projects() {
     )
   ).sort((a, b) => (b ?? 0) - (a ?? 0));
 
+  function getFirstImage(project: Project) {
+    return project.media?.find(isImage);
+  }
+
   // Group projects by year
   const getProjectsByYear = (year: number) =>
     filteredProjects.filter(
       (project) => project.end_date?.year === (year ?? 0)
     );
+
+  const handleMouseEnter = (proj: Project) => {
+    const firstImage = getFirstImage(proj);
+    setPreview({
+      image: firstImage || null,
+      slug: proj.general.slug as string,
+    });
+    //listen for click
+  };
 
   // Group component for a specific year
   const ProjectsGroup = ({
@@ -82,13 +97,7 @@ export default function Projects() {
       <Row>
         {projectsByYear.map((proj) => (
           <Col key={proj.id}>
-            {" "}
-            <Link
-              to={`/projects/${proj.general.slug}`}
-              onClick={() => console.log(proj.general.slug)}
-            >
-              <ProjectsListItem project={proj} />{" "}
-            </Link>
+            <ProjectsListItem project={proj} />
           </Col>
         ))}
       </Row>
@@ -97,19 +106,17 @@ export default function Projects() {
 
   // Individual project list item
   const ProjectsListItem = ({ project }: { project: Project }) => {
-    const firstImage = getFirstImage(project);
-
+    const link = `/projects/${project.general.slug}`;
     return (
-      <Row
-        className="my-2"
-        onMouseEnter={() =>
-          setPreview({
-            image: firstImage || null,
-            slug: project.general.slug as string,
-          })
-        }
-      >
-        <Col> {project.general.title} </Col>
+      <Row>
+        <Link
+          to={link}
+          onMouseEnter={() => handleMouseEnter(project)}
+          onMouseDown={() => navigate(link)}
+          className="row"
+        >
+          {project.general.title}
+        </Link>
       </Row>
     );
   };
@@ -146,6 +153,7 @@ export default function Projects() {
         <Col xs={12} md={6} className="mh-100">
           <Link to={`/projects/${preview.slug || "#"}`}>
             <Image
+              key={preview.slug}
               imageref={preview.image}
               className="object-fit-cover h-100 w-100"
             />
