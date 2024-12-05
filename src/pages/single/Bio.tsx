@@ -4,6 +4,7 @@ import { ProfileSchema } from "@jakubkanna/labguy-front-schema";
 import { useLoaderData } from "react-router-dom";
 import { Col, Accordion } from "react-bootstrap";
 import Image from "../../components/Image";
+import { isMobile } from "../../utils/helpers";
 
 export default function Bio() {
   const data = (useLoaderData() as ProfileSchema) || null;
@@ -50,15 +51,17 @@ export default function Bio() {
     );
   };
 
+  const colClass = isMobile() ? "" : "mh-100 d-flex flex-column";
+
   return (
     <Layout title="Bio" description={statement || undefined}>
-      <Col xs={12} md={6} className="mh-100 d-flex flex-column">
+      <Col xs={12} md={6} className={colClass}>
         <div className="h-100 overflow-auto px-md-5">
           {picture && <Image imageref={picture} className="img-fluid pb-4" />}
           {statement && HTMLReactParser(statement)}
         </div>
       </Col>
-      <Col xs={12} md={6} className="h-100 d-flex flex-column">
+      <Col xs={12} md={6} className={colClass}>
         <div className="h-100 d-flex flex-column overflow-auto px-md-5">
           <div className="my-auto">{arrayToHtml(additional)}</div>
         </div>

@@ -8,7 +8,9 @@
 .offcanvas-header {
   background-color: $ijoblight;
 }
-
+.offcanvas {
+  width: 100% !important;
+}
 @media (min-width: 992px) {
   /* On desktop (lg or above), reset to default Offcanvas behavior */
   .insidejob-offcanvas.offcanvas {

@@ -7,7 +7,7 @@ import HTMLReactParser from "html-react-parser/lib/index";
 import Layout from "../../components/layout/Layout.";
 
 import MediaComponent from "../../components/Media";
-import { parseDate } from "../../utils/helpers";
+import { isMobile, parseDate } from "../../utils/helpers";
 import { Work } from "../Works";
 import { TagSchema } from "@jakubkanna/labguy-front-schema";
 
@@ -33,11 +33,11 @@ export default function Project() {
   const formattedStartDate = parseDate(start_date);
   const formattedEndDate = parseDate(end_date);
   const works = (ProjectsOnWorks as { work: Work }[]).map((pow) => pow.work);
-
+  const colClass = isMobile() ? "" : "mh-100 d-flex flex-column overflow-auto";
   return (
     <Layout>
       <>
-        <Col xs={12} md={6} className="mh-100 d-flex flex-column overflow-auto">
+        <Col xs={12} md={6} className={colClass}>
           <h1 className="display-2">{general.title}</h1>
           <div className="px-3">
             <small>
@@ -89,7 +89,7 @@ export default function Project() {
             </div>
           </div>
         </Col>
-        <Col xs={12} md={6} className="mh-100 d-flex flex-column overflow-auto">
+        <Col xs={12} md={6} className={colClass}>
           {/* Render project media */}
           <Row className="gap-3">
             <Col xs={12}>

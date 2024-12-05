@@ -1,8 +1,5 @@
-$btn-transition:
-  color 0.15s ease-in-out,
-  background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out,
-  box-shadow 0.15s ease-in-out;
+$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
 .btn-insidejob {
   position: relative;
@@ -40,8 +37,16 @@ $btn-transition:
   right: -4.5px; /* Position the trapeze on the right */
   clip-path: polygon(75% 0, 100% 25%, 100% 75%, 75% 100%);
 }
-
 .btn-insidejob:hover::after,
 .btn-insidejob:hover::before {
   background-color: black; /* Transition the color of the trapezoids */
+}
+
+.btn-link {
+  color: $ijobdark;
+  text-align: start;
+  &:hover {
+    color: black;
+  }
+  text-decoration: none;
 }

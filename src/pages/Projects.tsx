@@ -12,7 +12,7 @@ import {
   TagSchema,
   UrlSchema,
 } from "@jakubkanna/labguy-front-schema";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout.";
 import Image from "../components/Image";
@@ -108,15 +108,14 @@ export default function Projects() {
   const ProjectsListItem = ({ project }: { project: Project }) => {
     const link = `/projects/${project.general.slug}`;
     return (
-      <Row>
-        <Link
-          to={link}
+      <Row className={isMobile() ? "py-2" : ""}>
+        <Button
           onMouseEnter={() => handleMouseEnter(project)}
           onMouseDown={() => navigate(link)}
-          className="row"
+          variant="link"
         >
           {project.general.title}
-        </Link>
+        </Button>
       </Row>
     );
   };
