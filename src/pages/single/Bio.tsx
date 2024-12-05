@@ -62,7 +62,7 @@ export default function Bio() {
         </div>
       </Col>
       <Col xs={12} md={6} className={colClass}>
-        <div className="h-100 d-flex flex-column overflow-auto px-md-5">
+        <div className="h-100 d-flex flex-column overflow-auto px-1 px-md-5">
           <div className="my-auto">{arrayToHtml(additional)}</div>
         </div>
       </Col>

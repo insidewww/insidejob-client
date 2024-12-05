@@ -65,7 +65,7 @@ export default function Project() {
                   ))}
                 </p>
               )}
-              <div className="p-3 p-md-5">
+              <div className={isMobile() ? "p-1" : "p-3"}>
                 {text && <>{HTMLReactParser(text as string)}</>}
               </div>
               <div className="d-flex mt-auto">

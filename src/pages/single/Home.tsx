@@ -40,24 +40,27 @@ export default function Homepage() {
             )}{" "}
           </Col>
         </Row>
-        <Row className="w-100">
-          <Col xs={12} className="d-flex justify-content-center gap-3">
-            {homepage_urls &&
-              homepage_urls.map((url, key) => (
-                <Button
-                  variant={"insidejob"}
-                  onClick={() =>
-                    window.open(
-                      (url as UrlSchema).url,
-                      "_blank",
-                      "noopener,noreferrer"
-                    )
-                  }
-                  key={key}
-                >
-                  <span>{(url as UrlSchema).title}</span>
-                </Button>
-              ))}
+        <Row>
+          <Col xs={12}>
+            <div className="d-flex justify-content-center align-items-center">
+              {homepage_urls &&
+                homepage_urls.map((url, key) => (
+                  <Button
+                    variant={"insidejob"}
+                    onClick={() =>
+                      window.open(
+                        (url as UrlSchema).url,
+                        "_blank",
+                        "noopener,noreferrer"
+                      )
+                    }
+                    key={key}
+                    className="m-2"
+                  >
+                    <span>{(url as UrlSchema).title}</span>
+                  </Button>
+                ))}
+            </div>
           </Col>
         </Row>
       </Col>
