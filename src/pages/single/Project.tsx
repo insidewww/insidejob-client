@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Project as ProjectSchema } from "../Projects";
 import { Link } from "react-router-dom";
 import WorkCard from "../../components/WorkCard";
@@ -33,6 +33,9 @@ export default function Project() {
   const formattedEndDate = parseDate(end_date);
   const works = (ProjectsOnWorks as { work: Work }[]).map((pow) => pow.work);
   const colClass = isMobile() ? "" : "mh-100 d-flex flex-column overflow-auto";
+  const isExhibitionView = (tags: TagSchema[]) =>
+    tags && tags.find((tag) => tag.title === "EXHIBITION VIEW");
+
   return (
     <Layout>
       <>
@@ -54,22 +57,24 @@ export default function Project() {
               {works && works.length > 0 && (
                 <p>
                   <span>Works: </span>
-                  {works.map((w, index) => (
-                    <span key={w.general.slug}>
-                      {w.general.title}
-                      {index < works.length - 1 && <span>, </span>}
-                    </span>
-                  ))}
+                  {works
+                    .filter(
+                      (w) => !isExhibitionView(w.general.tags as TagSchema[])
+                    )
+                    .map((w, index, filteredWorks) => (
+                      <span key={w.general.slug}>
+                        {w.general.title}
+                        {index < filteredWorks.length - 1 && <span>, </span>}
+                      </span>
+                    ))}
                 </p>
               )}
               <div className={isMobile() ? "p-1" : "p-3"}>
                 {text && <>{HTMLReactParser(text as string)}</>}
               </div>
-              <div className="d-flex mt-auto">
-                {" "}
-                <span>Related:&nbsp;</span>
-                <Link to="/projects">All Projects{urls && ","}</Link>
-                <span>&nbsp;</span>
+
+              <div className="d-flex mt-auto align-items-center ">
+                {urls.length > 0 && <span>Links: </span>}
                 {urls && urls.length > 0 ? (
                   urls.map((url, index) => (
                     <span key={url.id}>
@@ -83,13 +88,18 @@ export default function Project() {
                   <p></p>
                 )}
               </div>
+              <Link to="/projects" className="mt-4 me-2">
+                <Button variant="insidejob">
+                  <i className="bi bi-arrow-left-short"></i> Back
+                </Button>
+              </Link>
             </div>
           </div>
         </Col>
         <Col xs={12} md={6} className={colClass}>
           {/* Render project media */}
           {media.length > 0 && (
-            <Row className="gap-3">
+            <Row className="">
               <Col xs={12}>
                 <MediaComponent media={media} linkImg />
               </Col>
@@ -97,7 +107,7 @@ export default function Project() {
           )}
 
           {/* Works section */}
-          <Row className="gap-3">
+          <Row className="">
             {works && works.length > 0 ? (
               works.map((w) => (
                 <Col xs={12} key={w.id}>

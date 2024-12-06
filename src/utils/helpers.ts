@@ -27,6 +27,20 @@ function isUpcoming(project: Project) {
   return projectStartDate > currentDate;
 }
 
+function isExpired(project: Project) {
+  if (!project.end_date) return false; // If no end_date, project can't be expired
+
+  const currentDate = new Date();
+
+  const { year = 0, month = 0, day = 0, time = "00:00" } = project.end_date;
+
+  const [hours, minutes] = time.split(":").map(Number);
+
+  const projectEndDate = new Date(year, month, day, hours || 0, minutes || 0);
+
+  return projectEndDate < currentDate;
+}
+
 function isCurrent(project: Project) {
   // Ensure project.start_date is defined
   if (!project.start_date) return false;
@@ -54,7 +68,7 @@ function parseDate(dateObj: { [k: string]: unknown } | null | undefined) {
 
   const { year, month, day, time } = dateObj;
 
-  return `${month ? day : ""}
+  return `${month !== null || undefined ? day : ""}
   ${
     month !== undefined || null
       ? dayjs()
@@ -68,4 +82,12 @@ function isMobile() {
   return window.innerWidth < 768;
 }
 
-export { isVideo, isImage, isUpcoming, isCurrent, parseDate, isMobile };
+export {
+  isVideo,
+  isImage,
+  isUpcoming,
+  isExpired,
+  isCurrent,
+  parseDate,
+  isMobile,
+};

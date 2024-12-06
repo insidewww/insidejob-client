@@ -28,3 +28,8 @@
 .accordion {
   --bs-accordion-active-color: black;
 }
+.accordion-button {
+  width: auto;
+  display: flex;
+  gap: 1rem;
+}

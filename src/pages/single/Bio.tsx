@@ -17,7 +17,7 @@ export default function Bio() {
     const array = Array.isArray(arr) ? arr : [];
 
     return (
-      <Accordion className="accordion-insidejob">
+      <Accordion className="accordion-insidejob ">
         {array.map((item, index) => {
           // Default title if <h3> is not found
           let title = `Section ${index + 1}`;
@@ -31,7 +31,7 @@ export default function Bio() {
             const h3 = tempDiv.querySelector("h3");
             if (h3) {
               title = h3.textContent || title;
-              h3.remove(); // Remove the <h3> element from tempDiv
+              h3.remove();
             }
 
             // Get the modified HTML without the <h3>
@@ -39,11 +39,19 @@ export default function Bio() {
           }
 
           return (
-            <Accordion.Item eventKey={String(index)} key={index}>
-              <Accordion.Header className="font-insidejob-ext">
-                {title}
+            <Accordion.Item
+              eventKey={String(index)}
+              key={index}
+              className={isMobile() ? "" : "w-75 ms-auto me-auto"}
+            >
+              <Accordion.Header className="font-insidejob-ext d-flex justify-content-center py-4">
+                <h2 className="font-insidejob font"> {title}</h2>
               </Accordion.Header>
-              <Accordion.Body>{HTMLReactParser(modifiedHtml)}</Accordion.Body>
+              <Accordion.Body className="d-flex justify-content-center">
+                <div className="d-inline-block">
+                  {HTMLReactParser(modifiedHtml)}
+                </div>
+              </Accordion.Body>
             </Accordion.Item>
           );
         })}
@@ -57,7 +65,9 @@ export default function Bio() {
     <Layout title="Bio" description={statement || undefined}>
       <Col xs={12} md={6} className={colClass}>
         <div className="h-100 overflow-auto px-md-5">
-          {picture && <Image imageref={picture} className="img-fluid pb-4" />}
+          {picture && (
+            <Image imageref={picture} className="img-fluid pb-5 px-2" />
+          )}
           {statement && HTMLReactParser(statement)}
         </div>
       </Col>

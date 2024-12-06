@@ -114,7 +114,7 @@ export default function Projects() {
           onMouseDown={() => navigate(link)}
           variant="link"
         >
-          {project.general.title}
+          <h2 className="font-insidejob"> {project.general.title}</h2>
         </Button>
       </Row>
     );

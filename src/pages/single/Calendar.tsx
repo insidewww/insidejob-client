@@ -2,14 +2,16 @@ import { Col } from "react-bootstrap";
 import Layout from "../../components/layout/Layout.";
 import { useLoaderData } from "react-router-dom";
 import CalendarListItem from "../../components/calendar/CalendarListItem";
-import { isMobile, isUpcoming } from "../../utils/helpers";
+import { isExpired, isMobile, isUpcoming } from "../../utils/helpers";
 import { Project } from "../Projects";
 
 export default function Calendar() {
   const projects = useLoaderData() as Project[];
 
   // Separate projects into current and upcoming
-  const currentProjects = projects.filter((project) => !isUpcoming(project));
+  const currentProjects = projects.filter(
+    (project) => !isUpcoming(project) && !isExpired(project)
+  );
   const upcomingProjects = projects.filter((project) => isUpcoming(project));
 
   // styling
