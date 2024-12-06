@@ -15,7 +15,7 @@ export default function WorkCard({ work }: CardProps) {
 
   return (
     <Container>
-      <Row className="gap-3 p-2">
+      <Row className="gap-3">
         <Col xs={12}>
           <MediaComponent media={media} linkImg />
         </Col>

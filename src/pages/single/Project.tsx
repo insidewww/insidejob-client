@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import WorkCard from "../../components/WorkCard";
 import HTMLReactParser from "html-react-parser/lib/index";
 import Layout from "../../components/layout/Layout.";
-
 import MediaComponent from "../../components/Media";
 import { isMobile, parseDate } from "../../utils/helpers";
 import { Work } from "../Works";
@@ -89,11 +88,13 @@ export default function Project() {
         </Col>
         <Col xs={12} md={6} className={colClass}>
           {/* Render project media */}
-          <Row className="gap-3">
-            <Col xs={12}>
-              <MediaComponent media={media} linkImg />
-            </Col>
-          </Row>
+          {media.length > 0 && (
+            <Row className="gap-3">
+              <Col xs={12}>
+                <MediaComponent media={media} linkImg />
+              </Col>
+            </Row>
+          )}
 
           {/* Works section */}
           <Row className="gap-3">
