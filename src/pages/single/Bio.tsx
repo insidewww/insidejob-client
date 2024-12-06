@@ -31,7 +31,7 @@ export default function Bio() {
             const h3 = tempDiv.querySelector("h3");
             if (h3) {
               title = h3.textContent || title;
-              h3.remove(); // Remove the <h3> element from tempDiv
+              h3.remove();
             }
 
             // Get the modified HTML without the <h3>
@@ -45,7 +45,7 @@ export default function Bio() {
               className={isMobile() ? "" : "w-75 ms-auto me-auto"}
             >
               <Accordion.Header className="font-insidejob-ext d-flex justify-content-center py-4">
-                {title}
+                <h2 className="font-insidejob font"> {title}</h2>
               </Accordion.Header>
               <Accordion.Body className="d-flex justify-content-center">
                 <div className="d-inline-block">

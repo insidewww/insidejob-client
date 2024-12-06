@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Project as ProjectSchema } from "../Projects";
 import { Link } from "react-router-dom";
 import WorkCard from "../../components/WorkCard";
@@ -66,11 +66,9 @@ export default function Project() {
               <div className={isMobile() ? "p-1" : "p-3"}>
                 {text && <>{HTMLReactParser(text as string)}</>}
               </div>
-              <div className="d-flex mt-auto">
-                {" "}
-                <span>Related:&nbsp;</span>
-                <Link to="/projects">All Projects{urls && ","}</Link>
-                <span>&nbsp;</span>
+
+              <div className="d-flex mt-auto align-items-center ">
+                {urls.length > 0 && <span>Links: </span>}
                 {urls && urls.length > 0 ? (
                   urls.map((url, index) => (
                     <span key={url.id}>
@@ -84,6 +82,11 @@ export default function Project() {
                   <p></p>
                 )}
               </div>
+              <Link to="/projects" className="mt-4 me-2">
+                <Button variant="insidejob">
+                  <i className="bi bi-arrow-left-short"></i> Back
+                </Button>
+              </Link>
             </div>
           </div>
         </Col>
