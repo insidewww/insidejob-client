@@ -17,21 +17,34 @@ export default function Homepage() {
     homepage_urls,
   } = preferences;
 
-  const Backdrop = ({ className }: { className: string }) => {
-    return <div className={className}></div>;
+  const isBright = homepage_media?.isBright || false;
+
+  const Backdrop = ({
+    className,
+    style,
+  }: {
+    className: string;
+    style: React.CSSProperties;
+  }) => {
+    return <div className={className} style={style}></div>;
   };
 
   return (
     <Layout title="">
       <Col className="d-flex flex-column justify-content-center align-items-center h-100 position-relative">
         <div className="position-absolute top-0 start-0 w-100 h-100 z-0">
-          <Backdrop className="h-100 w-100 z-1 bg-insidejob-light position-fixed opacity-25" />
+          <Backdrop
+            className="h-100 w-100 z-1 position-fixed opacity-50"
+            style={{
+              backgroundColor: isBright ? "white" : "black",
+            }}
+          />
           <Background media={homepage_media} />
         </div>
         <Row>
           <Col className="d-flex flex-column align-items-center z-2">
             {homepage_heading && (
-              <h1 className="display-1 mb-3">{homepage_heading}</h1>
+              <h1 className="display-1 mb-3 fw-normal">{homepage_heading}</h1>
             )}{" "}
             {homepage_subheading && (
               <h2 className="h5 mb-4 font-insidejob-ext">

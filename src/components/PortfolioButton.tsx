@@ -8,7 +8,7 @@ const PortfolioButton = ({ url }: { url?: string | null }) => {
     } else {
       // If no PDF is available, navigate to the contact tab
       window.open(
-        "mailto:insidejob.www@gmail.com?subject=Portfolio%20Request",
+        "mailto:ula.lucinska@gmail.com,knychaus@gmail.com?subject=Portfolio%20Request",
         "_blank"
       );
     }
@@ -16,7 +16,7 @@ const PortfolioButton = ({ url }: { url?: string | null }) => {
 
   return (
     <Button onClick={handleClick} variant="insidejob">
-      {url ? "Download (PDF)" : "Request PDF"}
+      {url ? "Download Portfolio" : "Request Portfolio"}
     </Button>
   );
 };

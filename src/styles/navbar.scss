@@ -1,6 +1,13 @@
 .navbar-nav {
-  --bs-nav-link-color: $ijobdark;
+  --bs-nav-link-color: inherit;
   --bs-nav-link-hover-color: black;
+}
+
+.navbar-brand,
+.navbar-nav,
+a.nav-link,
+.offcanvas {
+  color: inherit !important;
 }
 
 .navbar {
