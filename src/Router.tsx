@@ -13,6 +13,8 @@ import Project from "./pages/single/Project";
 import { fetchData } from "./utils/loader";
 import NotFoundPage from "./pages/404";
 import Calendar from "./pages/single/Calendar";
+import Works from "./pages/Works";
+import Work from "./pages/single/Work";
 // import Works from "./pages/Works";
 // import Work from "./pages/single/Work";
 
@@ -51,18 +53,18 @@ const routes: RouteObject[] = [
         element: <Contact />,
         loader: () => fetchData("profile/1"),
       },
-      // {
-      //   path: "works",
-      //   element: <Works />,
-      //   loader: () => fetchData("works"),
-      //   children: [
-      //     {
-      //       path: ":slug",
-      //       element: <Work />,
-      //       loader: ({ params }) => fetchData("works/" + params.slug),
-      //     },
-      //   ],
-      // },
+      {
+        path: "works",
+        element: <Works />,
+        loader: () => fetchData("works"),
+        children: [
+          {
+            path: ":slug",
+            element: <Work />,
+            loader: ({ params }) => fetchData("works/" + params.slug),
+          },
+        ],
+      },
       {
         path: "projects",
         element: <Projects />,

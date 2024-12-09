@@ -62,10 +62,12 @@ export default function Project() {
                       (w) => !isExhibitionView(w.general.tags as TagSchema[])
                     )
                     .map((w, index, filteredWorks) => (
-                      <span key={w.general.slug}>
-                        {w.general.title}
-                        {index < filteredWorks.length - 1 && <span>, </span>}
-                      </span>
+                      <Link to={`works/${w.general.slug}`}>
+                        <span key={w.general.slug}>
+                          {w.general.title}
+                          {index < filteredWorks.length - 1 && <span>, </span>}
+                        </span>
+                      </Link>
                     ))}
                 </p>
               )}
