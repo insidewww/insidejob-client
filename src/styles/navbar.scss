@@ -13,4 +13,10 @@ a.nav-link,
 .navbar {
   --bs-navbar-brand-font-size: 1rem;
   --bs-navbar-toggler-icon-bg: url("/images/logo.svg");
+  --bs-navbar-toggler-border: none;
+  --bs-navbar-toggler-border-radius: none;
+}
+
+.navbar-toggler {
+  border: none;
 }
