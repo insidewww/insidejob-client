@@ -55,6 +55,9 @@ a {
   background-color: $ijoblight;
 }
 
+span p {
+  margin: 0;
+}
 @import "./scrollbar.scss";
 @import "./btn.scss";
 @import "./accordion.scss";

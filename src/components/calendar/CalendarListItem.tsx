@@ -58,7 +58,7 @@ export default function CalendarListItem({ project }: { project: Project }) {
         <small>
           {general.tags?.map((tag: TagSchema) => `[${tag.title}] `)}
         </small>
-        <span> {subtitle && <>{HTMLReactParser(subtitle)} </>} </span>
+        <span>{subtitle && <>{HTMLReactParser(subtitle)} </>} </span>
         <span>{displayDate(start_date, end_date)}</span>
         <span>{venue}</span>
         <span> {displayUrls(urls)} </span>

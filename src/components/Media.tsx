@@ -16,24 +16,38 @@ export default function MediaComponent({
 }: MediaProps) {
   // Early return if no media is provided
   if (!media || media.length === 0) {
-    return <p></p>;
+    return null;
   }
 
   return (
     <>
       {media.map((item, index) => {
         if (isImage(item)) {
-          return linkImg ? (
-            <Link to={item.cld_url || "#"} target="_blank" key={index}>
-              <Image imageref={item} className={className} />
-            </Link>
-          ) : (
-            <Image key={index} imageref={item} className={className} />
+          return (
+            <div key={index} className="media-item">
+              {linkImg ? (
+                <Link to={item.cld_url || "#"} target="_blank">
+                  <Image imageref={item} className={className} />
+                </Link>
+              ) : (
+                <Image imageref={item} className={className} />
+              )}
+              <p className="small py-2 m-0 text-center">{item.description}</p>
+            </div>
           );
         } else if (isVideo(item)) {
-          return <Video key={index} videoref={item} />;
+          return (
+            <div key={index} className="media-item">
+              <Video videoref={item} className={className} />
+              <p className="small py-2 m-0 text-center">{item.description}</p>
+            </div>
+          );
         } else {
-          return <p key={index}>Unsupported media type.</p>;
+          return (
+            <div key={index} className="media-item">
+              <p>Unsupported media type.</p>
+            </div>
+          );
         }
       })}
     </>

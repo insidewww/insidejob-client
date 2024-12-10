@@ -1,0 +1,14 @@
+The problem: adding exhibition views is breakneck
+Solution: Combine all media in dynamic array
+
+- each media optionaly should have data e.g. description (by default: Title, medium, year || media.description)
+    problem: media data will not update until array will be saved again
+        solution: store only media id's (unique field) in the array and generate media get response on backend dynamically.
+            - description will be taken depending on media relation (if it's relateed to some work else 'Exhibition view') 
+
+
+Dashboard: get all the media (project + works), then create new array of selectedMedia and send to backend
+
+Server: Generate media array from received id's array. For each media get it's description. Store it in media.description if it's empty.
+
+Client: display the array of full refs. 

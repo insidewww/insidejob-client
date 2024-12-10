@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import Layout from "../../components/layout/Layout.";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { Work as WorkSchema } from "../Works";
 import Image from "../../components/Image";
 import Video from "../../components/Video";
@@ -26,7 +26,7 @@ export default function Work() {
         {/* Display Dimensions and Year */}
         <Row>
           <Col xs={12}>
-            <p id="Details">
+            <p id="Details" className="text-center">
               {dimensions && <span>{dimensions} (cm), </span>}
               {medium && <span>{medium}, </span>}
               {year && <span>{year}</span>}
@@ -53,8 +53,11 @@ export default function Work() {
         {/* Footer Section */}
         <Row>
           <Col>
-            <span>Related: </span>
-            <Link to={"/works"}>All Works</Link>
+            <Link to="/projects" className="mt-4 me-2">
+              <Button variant="insidejob">
+                <i className="bi bi-arrow-left-short"></i> Back
+              </Button>
+            </Link>
           </Col>
         </Row>
       </Container>

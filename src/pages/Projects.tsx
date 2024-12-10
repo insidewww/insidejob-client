@@ -11,18 +11,20 @@ import {
   ProjectSchema,
   TagSchema,
   UrlSchema,
+  VideoRefSchema,
 } from "@jakubkanna/labguy-front-schema";
 import { Button, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout.";
 import Image from "../components/Image";
-import { isImage, isMobile } from "../utils/helpers";
+import { isMobile } from "../utils/helpers";
 
 export interface Project extends ProjectSchema {
   general: GeneralSectionSchema & { tags: TagSchema[] };
-  media: ImageRefSchema[];
+  media: (ImageRefSchema | VideoRefSchema)[];
   urls: UrlSchema[];
-  works: unknown[]; // Replace `unknown` with the actual type if available
+  works: unknown[];
+  cover: ImageRefSchema;
 }
 
 export default function Projects() {
@@ -58,14 +60,12 @@ export default function Projects() {
   const projectYears = Array.from(
     new Set(
       filteredProjects
-        .map((project) => project.end_date?.year ?? 0) // Fallback to 0 if undefined
+        .map((project) => project.end_date?.year ?? 0)
         .filter(Boolean)
     )
   ).sort((a, b) => (b ?? 0) - (a ?? 0));
 
-  function getFirstImage(project: Project) {
-    return project.media?.find(isImage);
-  }
+  const getFirstImage = (project: Project) => project.cover;
 
   // Group projects by year
   const getProjectsByYear = (year: number) =>
@@ -79,7 +79,6 @@ export default function Projects() {
       image: firstImage || null,
       slug: proj.general.slug as string,
     });
-    //listen for click
   };
 
   // Group component for a specific year
