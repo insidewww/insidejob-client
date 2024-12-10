@@ -7,12 +7,15 @@ import { LinkContainer } from "react-router-bootstrap";
 import { GeneralContext } from "../../contexts/GeneralContext";
 import { Helmet } from "react-helmet";
 import { isMobile } from "../../utils/helpers";
+import { useLocation } from "react-router-dom";
 
 function Header() {
   const { preferences } = useContext(GeneralContext);
   const artists_name = preferences ? preferences.artists_name : "";
   const isBright = preferences?.homepage_media?.isBright;
-
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  const filter = isHomePage ? (isBright ? "none" : "invert(1)") : "";
   // State to control Offcanvas visibility
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
@@ -42,7 +45,7 @@ function Header() {
           <Navbar.Toggle
             aria-controls="offcanvasNavbar"
             onClick={handleShow}
-            style={{ filter: isBright ? "none" : "invert(1)" }}
+            style={{ filter }}
           />
 
           {/* Offcanvas without any transition */}
