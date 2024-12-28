@@ -12,15 +12,16 @@ export default function CalendarListItem({ project }: { project: Project }) {
     start_date?: Project["start_date"],
     end_date?: Project["end_date"]
   ) {
-    if (!start_date && !end_date) return;
+    // If no start date, return nothing
+    if (!start_date) return null;
 
     const formattedStartDate = parseDate(start_date);
-    const formattedEndDate = parseDate(end_date);
+    const formattedEndDate = end_date ? parseDate(end_date) : "Ongoing"; // Show "Ongoing" if no end date
 
     return (
       <>
-        {formattedStartDate ? formattedStartDate : "N/A"}{" "}
-        {formattedEndDate ? "- " + formattedEndDate : "- N/A"}
+        {formattedStartDate}{" "}
+        {end_date && formattedEndDate ? `- ${formattedEndDate}` : ""}
       </>
     );
   }

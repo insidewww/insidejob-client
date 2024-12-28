@@ -95,7 +95,7 @@ export default function Projects() {
       </Row>
       <Row>
         {projectsByYear.map((proj) => (
-          <Col key={proj.id}>
+          <Col xs={12} key={proj.id}>
             <ProjectsListItem project={proj} />
           </Col>
         ))}

@@ -14,7 +14,7 @@ function isImage(media: MediaRef | null): media is ImageRefSchema {
   return media?.mediaType === "IMAGE";
 }
 function isUpcoming(project: Project) {
-  if (!project.start_date) return true;
+  if (!project.start_date) return false;
 
   const currentDate = new Date();
 

@@ -1,10 +1,9 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout.";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Work as WorkSchema } from "../Works";
 import Image from "../../components/Image";
 import Video from "../../components/Video";
-import { Link } from "react-router-dom";
 import { isImage, isVideo } from "../../utils/helpers";
 import {
   ImageRefSchema,
@@ -13,6 +12,7 @@ import {
 
 export default function Work() {
   const data = (useLoaderData() as WorkSchema) || null;
+  const navigate = useNavigate();
 
   if (!data) return null;
 
@@ -53,11 +53,13 @@ export default function Work() {
         {/* Footer Section */}
         <Row>
           <Col>
-            <Link to="/projects" className="mt-4 me-2">
-              <Button variant="insidejob">
-                <i className="bi bi-arrow-left-short"></i> Back
-              </Button>
-            </Link>
+            <Button
+              variant="insidejob"
+              className="mt-4 me-2"
+              onClick={() => navigate(-1)}
+            >
+              <i className="bi bi-arrow-left-short"></i> Back
+            </Button>
           </Col>
         </Row>
       </Container>
