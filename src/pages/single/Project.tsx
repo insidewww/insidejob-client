@@ -80,20 +80,22 @@ export default function Project() {
                 {text && <>{HTMLReactParser(text as string)}</>}
               </div>
 
-              <div className="d-flex mt-auto align-items-center ">
+              <div className="mt-auto mw-100 text-wrap">
                 {urls.length > 0 && <span>Links:&nbsp;</span>}
-                {urls && urls.length > 0 ? (
-                  urls.map((url, index) => (
-                    <span key={index}>
-                      <Link to={url.url} target="_blank">
-                        {url.title}
-                      </Link>
-                      {index < urls.length - 1 && <span>, </span>}
-                    </span>
-                  ))
-                ) : (
-                  <p></p>
-                )}
+                <div className="d-inline-block">
+                  {urls && urls.length > 0 ? (
+                    <>
+                      {urls.map((url, index) => (
+                        <span key={index}>
+                          <Link to={url.url} target="_blank">
+                            {url.title}
+                          </Link>
+                          {index < urls.length - 1 && <span>, </span>}
+                        </span>
+                      ))}
+                    </>
+                  ) : null}
+                </div>
               </div>
               <Link to="/projects" className="mt-4 me-2">
                 <Button variant="insidejob">

@@ -44,10 +44,12 @@ export default function Homepage() {
         <Row>
           <Col className="d-flex flex-column align-items-center z-2">
             {homepage_heading && (
-              <h1 className="display-1 mb-3 fw-normal">{homepage_heading}</h1>
+              <h1 className="display-1 mb-3 fw-normal text-center">
+                {homepage_heading}
+              </h1>
             )}{" "}
             {homepage_subheading && (
-              <h2 className="h5 mb-4 font-insidejob-ext">
+              <h2 className="h5 mb-4 font-insidejob-ext text-center">
                 {homepage_subheading}
               </h2>
             )}{" "}
