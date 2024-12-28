@@ -23,45 +23,47 @@ export default function Work() {
   return (
     <Layout title={general.title}>
       <Container className="d-flex flex-column gap-4 mh-100 overflow-auto">
-        {/* Display Dimensions and Year */}
-        <Row>
-          <Col xs={12}>
-            <p id="Details" className="text-center">
-              {dimensions && <span>{dimensions} (cm), </span>}
-              {medium && <span>{medium}, </span>}
-              {year && <span>{year}</span>}
-            </p>
-          </Col>
-        </Row>
-        {/* Display Images */}
-        <Row className="gap-3">
-          {media && media.length > 0 ? (
-            media.map((item) => (
-              <Col xs={12} key={item?.etag}>
-                {isImage(item) && <Image imageref={item as ImageRefSchema} />}{" "}
-                {/* Render image */}
-                {isVideo(item) && (
-                  <Video videoref={item as VideoRefSchema} />
-                )}{" "}
-                {/* Render video */}
-              </Col>
-            ))
-          ) : (
-            <p></p>
-          )}
-        </Row>
-        {/* Footer Section */}
-        <Row>
-          <Col>
-            <Button
-              variant="insidejob"
-              className="mt-4 me-2"
-              onClick={() => navigate(-1)}
-            >
-              <i className="bi bi-arrow-left-short"></i> Back
-            </Button>
-          </Col>
-        </Row>
+        <Col>
+          {/* Display Dimensions and Year */}
+          <Row>
+            <Col xs={12}>
+              <p id="Details" className="text-center">
+                {dimensions && <span>{dimensions} (cm), </span>}
+                {medium && <span>{medium}, </span>}
+                {year && <span>{year}</span>}
+              </p>
+            </Col>
+          </Row>
+          {/* Display Images */}
+          <Row className="gap-3">
+            {media && media.length > 0 ? (
+              media.map((item) => (
+                <Col xs={12} key={item?.etag}>
+                  {isImage(item) && <Image imageref={item as ImageRefSchema} />}{" "}
+                  {/* Render image */}
+                  {isVideo(item) && (
+                    <Video videoref={item as VideoRefSchema} />
+                  )}{" "}
+                  {/* Render video */}
+                </Col>
+              ))
+            ) : (
+              <></>
+            )}
+          </Row>
+          {/* Footer Section */}
+          <Row>
+            <Col>
+              <Button
+                variant="insidejob"
+                className="mt-4 me-2"
+                onClick={() => navigate(-1)}
+              >
+                <i className="bi bi-arrow-left-short"></i> Back
+              </Button>
+            </Col>
+          </Row>
+        </Col>
       </Container>
     </Layout>
   );

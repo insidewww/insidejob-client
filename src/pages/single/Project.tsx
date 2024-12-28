@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col } from "react-bootstrap";
 import { Project as ProjectSchema } from "../Projects";
 import { Link } from "react-router-dom";
 import HTMLReactParser from "html-react-parser/lib/index";
@@ -106,13 +106,7 @@ export default function Project() {
         {/* COL RIGHT */}
         <Col xs={12} md={6} className={colClass}>
           {/* Render project media */}
-          <Row>
-            {media.length > 0 && (
-              <Col xs={12}>
-                <MediaComponent media={media} linkImg />
-              </Col>
-            )}
-          </Row>
+          {media.length > 0 && <MediaComponent media={media} linkImg />}
 
           {/* Works section
           <Row className="">
