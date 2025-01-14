@@ -81,7 +81,7 @@ export default function Project() {
               </div>
 
               <div className="mt-auto mw-100 text-wrap">
-                {urls.length > 0 && <span>Links:&nbsp;</span>}
+                {urls && urls.length > 0 && <span>Links:&nbsp;</span>}
                 <div className="d-inline-block">
                   {urls && urls.length > 0 ? (
                     <>

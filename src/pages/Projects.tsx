@@ -107,13 +107,16 @@ export default function Projects() {
   const ProjectsListItem = ({ project }: { project: Project }) => {
     const link = `/projects/${project.general.slug}`;
     return (
-      <Row className={isMobile() ? "py-2" : ""}>
+      <Row className="py-3">
         <Button
           onMouseEnter={() => handleMouseEnter(project)}
           onMouseDown={() => navigate(link)}
           variant="link"
         >
-          <h2 className="font-insidejob"> {project.general.title}</h2>
+          <h2 className="project-item font-insidejob">
+            {" "}
+            {project.general.title}
+          </h2>
         </Button>
       </Row>
     );
@@ -127,7 +130,7 @@ export default function Projects() {
         <Row>
           <h6 className="text-center font-insidejob-ext">Selected Projects</h6>
         </Row>
-        <Row className="my-2">
+        <Row className="my-2 pb-2">
           <Col>
             <span>Name</span>
           </Col>
