@@ -107,16 +107,16 @@ export default function Projects() {
   const ProjectsListItem = ({ project }: { project: Project }) => {
     const link = `/projects/${project.general.slug}`;
     return (
-      <Row className="py-3">
+      <Row className="py-4">
         <Button
           onMouseEnter={() => handleMouseEnter(project)}
           onMouseDown={() => navigate(link)}
           variant="link"
         >
-          <h2 className="project-item font-insidejob">
+          <h4 className="project-item font-insidejob">
             {" "}
             {project.general.title}
-          </h2>
+          </h4>
         </Button>
       </Row>
     );

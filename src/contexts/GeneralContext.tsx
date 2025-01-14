@@ -37,11 +37,16 @@ export const GeneralContext = createContext<GeneralContextType>({
   setLoading: () => {},
 });
 
+interface GeneralProviderProps {
+  children: ReactNode;
+}
+
 export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   children,
 }) => {
   const [preferences, setPreferences] = useState<Preferences | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [status, setStatus] = useState<number | null>(null);
 
   const fetchPreferences = useMemo(() => {
     const fetchPreferencesFromServer = async () => {
@@ -50,7 +55,9 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
 
       try {
         const response = await fetch(apiUrl);
-        if (!response.ok) {
+        if (!response.ok && response.status === 429) {
+          setStatus(429);
+        } else if (!response.ok) {
           throw new Error(`Error fetching preferences: ${response.statusText}`);
         }
         const data = await response.json();
@@ -73,7 +80,16 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     <GeneralContext.Provider
       value={{ preferences, setPreferences, loading, setLoading }}
     >
-      {preferences ? children : <LoadingPage />}
+      {loading ? (
+        <LoadingPage />
+      ) : status === 429 ? (
+        <p className="font-monospace">
+          You have been timed-out because of too many requests. Please try again
+          later.
+        </p>
+      ) : (
+        children
+      )}
     </GeneralContext.Provider>
   );
 };
