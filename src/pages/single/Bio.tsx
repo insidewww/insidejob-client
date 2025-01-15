@@ -45,7 +45,7 @@ export default function Bio() {
               className={isMobile() ? "" : "w-75 ms-auto me-auto"}
             >
               <Accordion.Header className="font-insidejob-ext d-flex justify-content-center py-4">
-                <h2 className="font-insidejob font"> {title}</h2>
+                <h2 className="font-insidejob font fs-3"> {title}</h2>
               </Accordion.Header>
               <Accordion.Body className="d-flex justify-content-center">
                 <div className="d-inline-block">
