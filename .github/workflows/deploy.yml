@@ -1,0 +1,37 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Create .env file for build
+        run: |
+          echo "VITE_ADMIN_PATH=${{ secrets.VITE_ADMIN_PATH }}" >> .env
+          echo "VITE_SERVER_API_URL=${{ secrets.VITE_SERVER_API_URL }}" >> .env
+
+      - name: Build the project
+        run: |
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # This token is automatically available in your GitHub Actions environment
+          publish_dir: ./dist
