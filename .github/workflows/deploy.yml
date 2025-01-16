@@ -1,37 +1,44 @@
-name: Deploy to GitHub Pages
+name: Sync Fork and Deploy to GitHub Pages
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
+  workflow_run:
+    workflows: ["Sync with Template"] # Trigger when 'Sync with Template' workflow completes
+    types:
+      - completed # Trigger when the workflow completes
+    status: success # Only trigger if the previous workflow was successful
 jobs:
-  sync-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: write # Permissions to write to the repository
+      pages: write # Permissions to deploy to GitHub Pages
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history to avoid issues with commit history
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "22"
+          node-version: "22" # Use the appropriate Node.js version for your project
 
       - name: Install dependencies
         run: |
-          npm install
+          npm install  # Install dependencies, adjust based on your package manager
 
       - name: Create .env file for build
         run: |
-          echo "VITE_ADMIN_PATH=${{ secrets.VITE_ADMIN_PATH }}" >> .env
           echo "VITE_SERVER_API_URL=${{ secrets.VITE_SERVER_API_URL }}" >> .env
+          echo "VITE_CLD_CLOUD_NAME=${{ secrets.VITE_CLD_CLOUD_NAME }}" >> .env
 
       - name: Build the project
         run: |
-          npm run build
+          npm run build  # Replace with the appropriate build command for your project
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # This token is automatically available in your GitHub Actions environment
-          publish_dir: ./dist
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Use the GitHub token to authenticate the deployment
+          publish_dir: ./dist # Directory containing the built files (adjust if needed)
