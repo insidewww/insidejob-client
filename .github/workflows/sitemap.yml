@@ -12,26 +12,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
           cache: "npm"
 
+      # Step 3: Install dependencies
       - name: Install Dependencies
         run: npm install
 
+      # Step 4: Create .env file with secrets
       - name: Create .env file for build
         run: |
           echo "VITE_SERVER_API_URL=${{ secrets.VITE_SERVER_API_URL }}" >> .env
           echo "VITE_CLD_CLOUD_NAME=${{ secrets.VITE_CLD_CLOUD_NAME }}" >> .env
 
+      # Step 5: Debug .env file content (Optional - For Debugging Only)
+      - name: Verify .env file
+        run: cat .env # Remove this step for production
+
+      # Step 6: Generate Sitemap
       - name: Generate Sitemap
         run: npm run sitemap
 
+      # Step 7: Commit and Push Changes
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
