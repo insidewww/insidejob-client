@@ -1,0 +1,41 @@
+name: Generate Sitemap
+
+on:
+  # Trigger this workflow once a month at midnight on the 1st day
+  schedule:
+    - cron: "0 0 1 * *"
+  # Allow manual triggers
+  workflow_dispatch:
+
+jobs:
+  generate-sitemap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create .env file for build
+        run: |
+          echo "VITE_SERVER_API_URL=${{ secrets.VITE_SERVER_API_URL }}" >> .env
+          echo "VITE_CLD_CLOUD_NAME=${{ secrets.VITE_CLD_CLOUD_NAME }}" >> .env
+
+      - name: Generate Sitemap
+        run: npm run sitemap
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/sitemap.xml
+          git commit -m "Update sitemap via GitHub Actions" || echo "No changes to commit"
+          git push

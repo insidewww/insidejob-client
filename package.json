@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sitemap": "node ./src/utils/generateSiteMap.js"
   },
   "engines": {
     "node": ">=22.8.0"
@@ -22,6 +23,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "dayjs": "^1.11.13",
+    "dotenv": "^16.4.7",
     "html-react-parser": "^5.1.12",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",

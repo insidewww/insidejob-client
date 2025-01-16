@@ -5,7 +5,6 @@ on:
     workflows: ["Sync with Template"] # Trigger when 'Sync with Template' workflow completes
     types:
       - completed # Trigger when the workflow completes
-    status: success # Only trigger if the previous workflow was successful
 jobs:
   deploy:
     runs-on: ubuntu-latest
