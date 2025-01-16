@@ -7,6 +7,11 @@ on:
       - main
   # Allow manual trigger
   workflow_dispatch:
+  # Trigger after the deploy workflow completes
+  workflow_run:
+    workflows: ["Generate Sitemap"]
+    types:
+      - completed
 jobs:
   deploy:
     runs-on: ubuntu-latest
