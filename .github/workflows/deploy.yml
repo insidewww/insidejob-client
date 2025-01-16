@@ -1,10 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  workflow_run:
-    workflows: ["Sync with Template"] # Trigger when 'Sync with Template' workflow completes
-    types:
-      - completed # Trigger when the workflow completes
+  # Trigger on push to the `main` branch
+  push:
+    branches:
+      - main
+  # Allow manual trigger
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
