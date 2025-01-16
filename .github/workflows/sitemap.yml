@@ -6,11 +6,6 @@ on:
     - cron: "0 0 1 * *"
   # Allow manual triggers
   workflow_dispatch:
-  # Trigger after the deploy workflow completes
-  workflow_run:
-    workflows: ["Deploy to GitHub Pages"]
-    types:
-      - completed
 
 jobs:
   generate-sitemap:
