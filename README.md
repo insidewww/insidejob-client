@@ -10,8 +10,8 @@
    ```
 3. Create/add variables in `.env` file in root directory and github secrets
    ```js
-   VITE_SERVER_API_URL = "http://localhost:3000/api";
-   VITE_CLD_CLOUD_NAME = "abcdefghi";
+   VITE_SERVER_API_URL="http://localhost:3000/api"
+   VITE_CLD_CLOUD_NAME="abcdefghi"
    BASE_URL="http://example.com"
    ```
 4. You are good to go!
