@@ -1,6 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
+  # Trigger the workflow on push to the main branch
+  push:
+    branches:
+      - main
   # Allow manual trigger
   workflow_dispatch:
   # Trigger after the deploy workflow completes
