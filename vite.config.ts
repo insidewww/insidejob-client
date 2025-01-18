@@ -4,8 +4,6 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/insidejob-client",
-
   plugins: [
     react(),
     viteStaticCopy({
