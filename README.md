@@ -8,7 +8,7 @@
     # labguy
     .env
    ```
-3. Create/add variables in `.env` file in root directory
+3. Create/add variables in `.env` file in root directory and github secrets
    ```js
    VITE_SERVER_API_URL = "http://localhost:3000/api";
    VITE_CLD_CLOUD_NAME = "abcdefghi";
