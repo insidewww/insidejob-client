@@ -17,5 +17,4 @@
 4. You are good to go!
    ```js
    npm run dev
-   npm run deploy
    ```
