@@ -4,6 +4,7 @@ import { useLoaderData } from "react-router-dom";
 import CalendarListItem from "../../components/calendar/CalendarListItem";
 import { isExpired, isMobile, isUpcoming } from "../../utils/helpers";
 import { Project } from "../Projects";
+import { Helmet } from "react-helmet";
 
 export default function Calendar() {
   const projects = useLoaderData() as Project[];
@@ -31,17 +32,22 @@ export default function Calendar() {
   };
 
   return (
-    <Layout title="Current">
-      <>
-        <Col xs={12} md={6} className="mh-100">
-          <h6 className="text-center font-insidejob-ext">Ongoing</h6>
-          <ProjectList projects={currentProjects} />
-        </Col>
-        <Col xs={12} md={6} className="mh-100 ">
-          <h6 className="text-center font-insidejob-ext">Upcoming</h6>
-          <ProjectList projects={upcomingProjects} />
-        </Col>
-      </>
-    </Layout>
+    <>
+      <Helmet>
+        <link rel="canonical" href="https://www.michalknychaus.com/calendar" />
+      </Helmet>
+      <Layout title="Current">
+        <>
+          <Col xs={12} md={6} className="mh-100">
+            <h6 className="text-center font-insidejob-ext">Ongoing</h6>
+            <ProjectList projects={currentProjects} />
+          </Col>
+          <Col xs={12} md={6} className="mh-100 ">
+            <h6 className="text-center font-insidejob-ext">Upcoming</h6>
+            <ProjectList projects={upcomingProjects} />
+          </Col>
+        </>
+      </Layout>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import { useLoaderData } from "react-router-dom";
 import { Col, Accordion } from "react-bootstrap";
 import Image from "../../components/Image";
 import { isMobile } from "../../utils/helpers";
+import { Helmet } from "react-helmet";
 
 export default function Bio() {
   const data = (useLoaderData() as ProfileSchema) || null;
@@ -62,20 +63,25 @@ export default function Bio() {
   const colClass = isMobile() ? "" : "mh-100 d-flex flex-column";
 
   return (
-    <Layout title="Bio" description={statement || undefined}>
-      <Col xs={12} md={6} className={colClass}>
-        <div className="h-100 overflow-auto px-md-5">
-          {picture && (
-            <Image imageref={picture} className="img-fluid pb-5 px-2" />
-          )}
-          {statement && HTMLReactParser(statement)}
-        </div>
-      </Col>
-      <Col xs={12} md={6} className={colClass}>
-        <div className="h-100 d-flex flex-column overflow-auto px-1 px-md-5">
-          <div className="my-auto">{arrayToHtml(additional)}</div>
-        </div>
-      </Col>
-    </Layout>
+    <>
+      <Helmet>
+        <link rel="canonical" href="https://www.ulalucinska.com/bio" />
+      </Helmet>
+      <Layout title="Bio" description={statement || undefined}>
+        <Col xs={12} md={6} className={colClass}>
+          <div className="h-100 overflow-auto px-md-5">
+            {picture && (
+              <Image imageref={picture} className="img-fluid pb-5 px-2" />
+            )}
+            {statement && HTMLReactParser(statement)}
+          </div>
+        </Col>
+        <Col xs={12} md={6} className={colClass}>
+          <div className="h-100 d-flex flex-column overflow-auto px-1 px-md-5">
+            <div className="my-auto">{arrayToHtml(additional)}</div>
+          </div>
+        </Col>
+      </Layout>
+    </>
   );
 }
