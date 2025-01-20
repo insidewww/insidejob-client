@@ -48,7 +48,7 @@ export default function Project() {
           href={`${getCanonicalBaseUrl(data)}/projects/${general.slug}`}
         />
       </Helmet>
-      <Layout>
+      <Layout title={general.title}>
         <>
           <Col xs={12} md={6} className={colClass}>
             <h1 className="display-2">{general.title}</h1>

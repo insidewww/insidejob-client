@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout.";
 import Image from "../components/Image";
 import { isMobile } from "../utils/helpers";
+import { Helmet } from "react-helmet";
 
 export interface Project extends ProjectSchema {
   general: GeneralSectionSchema & { tags: TagSchema[] };
@@ -122,42 +123,49 @@ export default function Projects() {
   return slug ? (
     <Outlet />
   ) : (
-    <Layout title="Projects">
-      <Col xs={12} md={6} className="d-flex flex-column mh-100 px-md-5">
-        <Row>
-          <h6 className="text-center font-insidejob-ext">Selected Projects</h6>
-        </Row>
-        <Row className="my-2 pb-2">
-          <Col>
-            <span>Name</span>
-          </Col>
-          <Col className="text-end">
-            <span>Year</span>
-          </Col>
-        </Row>
-        <Row className="flex-grow-1 overflow-auto">
-          <Col className="d-flex flex-column justify-content-end">
-            {projectYears.map((year) => (
-              <ProjectsGroup
-                key={year}
-                year={year}
-                projectsByYear={getProjectsByYear(year)}
-              />
-            ))}
-          </Col>
-        </Row>
-      </Col>
-      {!isMobile() && preview.image && preview.slug && (
-        <Col xs={12} md={6} className="mh-100">
-          <Link to={`/projects/${preview.slug || "#"}`}>
-            <Image
-              key={preview.slug}
-              imageref={preview.image}
-              className="object-fit-cover h-100 w-100"
-            />
-          </Link>
+    <>
+      <Helmet>
+        <link rel="canonical" href={`https://ulalucinska.com/projects`} />
+      </Helmet>
+      <Layout title="Projects">
+        <Col xs={12} md={6} className="d-flex flex-column mh-100 px-md-5">
+          <Row>
+            <h6 className="text-center font-insidejob-ext">
+              Selected Projects
+            </h6>
+          </Row>
+          <Row className="my-2 pb-2">
+            <Col>
+              <span>Name</span>
+            </Col>
+            <Col className="text-end">
+              <span>Year</span>
+            </Col>
+          </Row>
+          <Row className="flex-grow-1 overflow-auto">
+            <Col className="d-flex flex-column justify-content-end">
+              {projectYears.map((year) => (
+                <ProjectsGroup
+                  key={year}
+                  year={year}
+                  projectsByYear={getProjectsByYear(year)}
+                />
+              ))}
+            </Col>
+          </Row>
         </Col>
-      )}
-    </Layout>
+        {!isMobile() && preview.image && preview.slug && (
+          <Col xs={12} md={6} className="mh-100">
+            <Link to={`/projects/${preview.slug || "#"}`}>
+              <Image
+                key={preview.slug}
+                imageref={preview.image}
+                className="object-fit-cover h-100 w-100"
+              />
+            </Link>
+          </Col>
+        )}
+      </Layout>
+    </>
   );
 }
