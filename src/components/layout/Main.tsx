@@ -44,7 +44,6 @@ export default function Main({ children }: { children: ReactNode }) {
 
   // Handle fade-in logic based on navigation state
   useEffect(() => {
-    console.log(navigation.state);
     // Store timeout ID to clear it on cleanup
     const timeoutId = setTimeout(() => {
       if (navigation.state !== "loading") {
