@@ -5,14 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Static routes (no dynamic slugs)
-const staticRoutes = [
-  "/",
-  "/bio",
-  "/contact",
-  "/calendar",
-  "/works",
-  "/projects",
-];
+const staticRoutes = ["/", "/bio", "/contact", "/works", "/projects"];
 
 // Assuming you have a function to fetch dynamic slugs for posts, projects, etc.
 const fetchSlugs = async (routeType) => {
