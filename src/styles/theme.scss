@@ -6,16 +6,16 @@ $ijoblight: #ecedef;
 
 @font-face {
   font-family: "Insidejob";
-  src:
-    url("/fonts/Apoc-Revelations-Variable[wght].woff2") format("woff2"),
+  src: url("/fonts/Apoc-Revelations-Variable[wght].woff2") format("woff2"),
     url("/fonts/Apoc-Revelations-Variable[wght].woff") format("woff");
+  font-display: block;
 }
 
 @font-face {
   font-family: "InsidejobArea";
-  src:
-    url("/fonts/Area-Variable[wght,wdth,INKT,slnt].woff2") format("woff2"),
+  src: url("/fonts/Area-Variable[wght,wdth,INKT,slnt].woff2") format("woff2"),
     url("/fonts/Area-Variable[wght,wdth,INKT,slnt].woff") format("woff");
+  font-display: block;
 }
 
 :root {
@@ -42,9 +42,7 @@ h6 {
 }
 .font-insidejob-ext {
   font-family: "InsidejobArea";
-  font-variation-settings:
-    "wdth" 155,
-    "INKT" 1;
+  font-variation-settings: "wdth" 155, "INKT" 1;
 }
 
 a {
