@@ -22,7 +22,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
         setLoading(true);
 
         if (!import.meta.env.VITE_SERVER_API_URL) {
-          console.error("VITE_SERVER_API_URL not found");
+          return console.error("VITE_SERVER_API_URL not found");
         }
 
         const input = import.meta.env.VITE_SERVER_API_URL + "/preferences";
@@ -42,7 +42,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
 
     const triggerCheck = async () => {
       if (!import.meta.env.VITE_API_GITHUB_TOKEN) {
-        console.error("VITE_API_GITHUB_TOKEN not found");
+        return console.error("VITE_API_GITHUB_TOKEN not found");
       }
 
       const owner = import.meta.env.VITE_API_GITHUB_OWNER;
