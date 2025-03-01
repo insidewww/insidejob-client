@@ -28,6 +28,7 @@ export default function Layout({
     <>
       <Helmet>
         <title>{metadata.title}</title>
+        <meta name="title" content={metadata.title} />
         <meta name="description" content={metadata.description} />
         <meta name="author" content={metadata.name} />
       </Helmet>
