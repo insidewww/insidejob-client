@@ -52,7 +52,7 @@ export default function Image({ imageref, className }: ImageProps) {
           src={imgSrc}
           srcSet={srcSet}
           sizes={sizes}
-          alt={alt}
+          alt={alt || ""}
           style={!loading ? {} : { display: `none` }}
           onLoad={() => setLoading(false)}
           className={className || "img-fluid"}

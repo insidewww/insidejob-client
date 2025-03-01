@@ -39,7 +39,7 @@ export function getImageAttributes(image: ImageRefSchema) {
       src: getCldUrl(public_id, sizes.MEDIUM),
       srcSet: getSrcSet(public_id),
       sizes: `(max-width: 600px) ${sizes.SMALL}px, (max-width: 1200px) ${sizes.MEDIUM}px, (max-width: 1600px) ${sizes.BIG}px, ${sizes.FULL}px`,
-      alt: image.description || "Image",
+      alt: image.description || "",
     };
   }
 
