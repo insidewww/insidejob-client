@@ -68,14 +68,21 @@ function parseDate(dateObj: { [k: string]: unknown } | null | undefined) {
 
   const { year, month, day, time } = dateObj;
 
-  return `${month !== null || undefined ? day : ""}
-  ${
-    month !== undefined || null
+  // Check if the month and year are valid
+  const formattedMonth =
+    month !== null && month !== undefined
       ? dayjs()
           .set("month", month as number)
           .format("MMMM")
-      : ""
-  } ${year ? year : ""}${time ? ", " + time : ""}`;
+      : "";
+
+  // Build the formatted date string
+  const formattedDay = day ? `${day} ` : "";
+  const formattedYear = year ? ` ${year}` : "";
+  const formattedTime = time ? `, ${time}` : "";
+
+  // Return the formatted date string
+  return `${formattedDay}${formattedMonth}${formattedYear}${formattedTime}`;
 }
 
 function isMobile() {
