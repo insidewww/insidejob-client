@@ -55,7 +55,7 @@ export default function CalendarListItem({ project }: { project: Project }) {
       <Col className="col-12 text-center">
         <h2>{general.title}</h2>
       </Col>
-      <Col className="d-flex gap-2 justify-content-center align-items-center flex-wrap">
+      <Col className="d-flex gap-2 justify-content-center align-items-center flex-wrap text-center">
         <small>
           {general.tags?.map((tag: TagSchema) => `[${tag.title}] `)}
         </small>

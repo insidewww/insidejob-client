@@ -38,11 +38,11 @@ export default function Calendar() {
       </Helmet>
       <Layout title="Current">
         <>
-          <Col xs={12} md={6} className="mh-100">
+          <Col xs={12} md={6}>
             <h6 className="text-center font-insidejob-ext">Ongoing</h6>
             <ProjectList projects={currentProjects} />
           </Col>
-          <Col xs={12} md={6} className="mh-100 ">
+          <Col xs={12} md={6}>
             <h6 className="text-center font-insidejob-ext">Upcoming</h6>
             <ProjectList projects={upcomingProjects} />
           </Col>
