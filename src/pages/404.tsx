@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Col, Container } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import { useEffect } from "react";
-import Layout from "../components/layout/Layout.";
+import Layout from "../components/layout/Layout";
 
 export default function NotFoundPage() {
   const location = useLocation();

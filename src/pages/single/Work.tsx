@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import Layout from "../../components/layout/Layout.";
+import Layout from "../../components/layout/Layout";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Work as WorkSchema } from "../Works";
 import Image from "../../components/Image";

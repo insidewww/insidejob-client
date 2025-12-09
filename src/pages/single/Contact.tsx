@@ -1,5 +1,5 @@
 import { ProfileSchema } from "@jakubkanna/labguy-front-schema";
-import Layout from "../../components/layout/Layout.";
+import Layout from "../../components/layout/Layout";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, useLoaderData } from "react-router-dom";
 import { useContext } from "react";

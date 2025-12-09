@@ -3,7 +3,7 @@ import { Button, Col } from "react-bootstrap";
 import { Project as ProjectSchema } from "../Projects";
 import { Link } from "react-router-dom";
 import HTMLReactParser from "html-react-parser/lib/index";
-import Layout from "../../components/layout/Layout.";
+import Layout from "../../components/layout/Layout";
 import MediaComponent from "../../components/Media";
 import { isMobile, parseDate } from "../../utils/helpers";
 import { Work } from "../Works";

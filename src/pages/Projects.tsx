@@ -15,7 +15,7 @@ import {
 } from "@jakubkanna/labguy-front-schema";
 import { Button, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Layout from "../components/layout/Layout.";
+import Layout from "../components/layout/Layout";
 import Image from "../components/Image";
 import { isMobile } from "../utils/helpers";
 import { Helmet } from "react-helmet";

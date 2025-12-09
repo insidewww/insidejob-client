@@ -3,7 +3,7 @@ import { GeneralContext } from "../../contexts/GeneralContext";
 import { Button, Col, Row } from "react-bootstrap";
 import { UrlSchema } from "@jakubkanna/labguy-front-schema";
 import Background from "../../components/Background";
-import Layout from "../../components/layout/Layout.";
+import Layout from "../../components/layout/Layout";
 import { Helmet } from "react-helmet";
 
 export default function Homepage() {

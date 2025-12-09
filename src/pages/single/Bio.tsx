@@ -1,5 +1,5 @@
 import HTMLReactParser from "html-react-parser/lib/index";
-import Layout from "../../components/layout/Layout.";
+import Layout from "../../components/layout/Layout";
 import { ProfileSchema } from "@jakubkanna/labguy-front-schema";
 import { useLoaderData } from "react-router-dom";
 import { Col, Accordion } from "react-bootstrap";

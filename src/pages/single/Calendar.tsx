@@ -1,5 +1,5 @@
 import { Col } from "react-bootstrap";
-import Layout from "../../components/layout/Layout.";
+import Layout from "../../components/layout/Layout";
 import { useLoaderData } from "react-router-dom";
 import CalendarListItem from "../../components/calendar/CalendarListItem";
 import { isExpired, isMobile, isUpcoming } from "../../utils/helpers";
