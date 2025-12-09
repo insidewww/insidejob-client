@@ -1,5 +1,6 @@
 import { Cloudinary } from "@cloudinary/url-gen/index";
 import { scale } from "@cloudinary/url-gen/actions/resize";
+import { format } from "@cloudinary/url-gen/actions/delivery";
 import { ImageRefSchema } from "@jakubkanna/labguy-front-schema";
 
 // Global sizes for responsive images
@@ -19,6 +20,8 @@ function getCldUrl(public_id: string, width: number) {
   });
 
   const myImage = cld.image(public_id);
+  // Keep transparency intact by forcing an alpha-safe format.
+  myImage.delivery(format("auto"));
   myImage.resize(scale().width(width));
   return myImage.toURL();
 }
