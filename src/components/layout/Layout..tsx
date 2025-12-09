@@ -21,7 +21,8 @@ export default function Layout({
     name: preferences?.artists_name,
   };
 
-  const singlePageContentClass = "overflow-hidden h-100";
+  // Allow long single pages to scroll; keep mobile behavior the same.
+  const singlePageContentClass = "overflow-auto h-100";
   const singlePageContentMobileClass = "overflow-auto h-100 gap-2";
 
   return (
