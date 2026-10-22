@@ -3,7 +3,7 @@
 ## Current production
 
 - Public sites: `https://michalknychaus.com` and `https://ulalucinska.com`, both served by the Render static site `insidejob-client.onrender.com`.
-- Production source: `insidewww/insidejob-client`, branch `main`. Release commit: `f338af3217acfc53fba954f5bc85ac85c8e7485a`.
+- Production source: `insidewww/insidejob-client`, branch `main`. Current runtime release: `8766ccd22ad157cefedeb774d75f9d3b1febc02c` (4K image support).
 - WordPress: `/home/host951157/insidejob-wordpress`, with its own database and uploads.
 - WordPress admin: `https://host951157.xce.pl/wp-admin/`; native REST: `https://host951157.xce.pl/wp-json/wp/v2`.
 - `INSIDEJOB_FRONTEND_URL=https://michalknychaus.com` points published View links at production. Drafts remain private; REST API Only disables public theme pages and theme previews.
@@ -123,3 +123,5 @@ The combined archive was downloaded completely using the native administrator da
 Inside Job Content 1.0.2 sets the native `big_image_size_threshold` filter to 4096px, preserving UHD 3840×2160 and DCI 4096×2160 uploads as full-size images. Larger uploads still retain their original files alongside WordPress’s scaled display copies. The core Image block render filter uses `wp_get_original_image_url()` and `WP_HTML_Tag_Processor` to expose `data-full-url`; the frontend gallery reads that URL while normal previews retain responsive `srcset` behavior. This also resolves original files for images scaled by the previous 2560px threshold, without rewriting posts or regenerating media.
 
 The hosting limit is 512 MB per file, confirmed in the native Media upload screen. A fresh SQL/plugin backup was downloaded and verified before the change at `/Users/jakubkanna/Documents/Backups/insidejob/2026-10-23-4k-images/`. Actual WordPress uploads and the production-build browser gallery were checked at UHD and DCI 4K, including an older scaled attachment and a 1024px inline preview. Original-file hashes are unchanged. Temporary verification attachments were removed afterward. Ten tests, lint and the production build pass.
+
+The 4K release `8766ccd22ad157cefedeb774d75f9d3b1febc02c` passed [GitHub validation](https://github.com/insidewww/insidejob-client/actions/runs/39867558281). Both production domains serve `/assets/index-CuEM-ZYY.js`; desktop/mobile production checks pass for gallery navigation, captions, focus restoration, content routes and API failure recovery.
