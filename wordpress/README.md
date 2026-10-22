@@ -1,15 +1,16 @@
 # Hosting runbook
 
-## Current separation
+## Current production
 
-- WordPress: `/home/host951157/insidejob-wordpress`, its own database and uploads.
-- Labguy: `/home/host951157/labguy-server`; existing PM2 process, source and database remain available.
-- Public WordPress admin: `https://host951157.xce.pl/wp-admin/`.
-- Native WordPress REST: `https://host951157.xce.pl/wp-json/wp/v2`.
-- Legacy `/api/*` and `/uploads/*` continue to proxy to the existing Node process while the deployed frontend uses them.
-- `INSIDEJOB_FRONTEND_URL` in WordPress configuration points published View links to `http://localhost:5178`. Drafts stay private; use the editor canvas for preview. The active REST API Only plugin disables public theme pages, including their theme previews.
+- Public sites: `https://michalknychaus.com` and `https://ulalucinska.com`, both served by the Render static site `insidejob-client.onrender.com`.
+- Production source: `insidewww/insidejob-client`, branch `main`. Release commit: `f338af3217acfc53fba954f5bc85ac85c8e7485a`.
+- WordPress: `/home/host951157/insidejob-wordpress`, with its own database and uploads.
+- WordPress admin: `https://host951157.xce.pl/wp-admin/`; native REST: `https://host951157.xce.pl/wp-json/wp/v2`.
+- `INSIDEJOB_FRONTEND_URL=https://michalknychaus.com` points published View links at production. Drafts remain private; REST API Only disables public theme pages and theme previews.
+- Labguy’s application directory, separate legacy database, PM2 `www` process, old logs, reboot/health-check jobs and API/uploads proxy are removed. Port 3000 is closed; the WordPress cron job remains.
+- The legacy database login is revoked by rotating its password. Its empty hosting-managed account remains because the SSH database account cannot execute `DROP USER`; complete account deletion requires Hostido database administration. Private recovery information is outside Git.
 
-The hosting installer initially placed WordPress inside Labguy's directory. The working WordPress installation was copied into its separate directory and the account's document root updated. The installer-created copy inside Labguy is not the working WordPress installation. Do not remove Labguy during this testing phase.
+The hosting installer’s inactive WordPress copy was inside the removed Labguy directory. The working WordPress installation is independent and has no symlinks into Labguy. Both public domains now use native WordPress content; `/api/projects` returns 404.
 
 ## Backups before migration
 
@@ -50,28 +51,29 @@ Event date fields use human month numbers (January = 1); the client adapts these
 - Check native block validity and save/reload a temporary project, including Gallery, rich text, an Embed and ACF fields.
 - Check desktop/mobile layouts, Bio accordion, gallery keyboard/focus/scroll behavior and all Back button states.
 - Hostido provides automatic hosting backups. Backup Migration also provides manual combined database/files ZIP exports. Keep a verified snapshot before imports or deployment.
-- Confirm legacy API and deployed site still work.
+- After cutover, verify native WordPress endpoints and both public sites work while legacy `/api/projects` returns 404.
 
-## Later production cutover
+## Production deployment and retirement — 22 October 2026
 
-Production deployment and Labguy removal are deferred. Before a later cutover: take fresh backups, reconcile any content changes made since this snapshot, update the frontend URL constant, review canonical URLs and sitemap behavior, and deploy the reviewed React build. Remove old API proxy rules, Node services, credentials, files and database only after the replacement has been accepted and a restore-capable archive is retained. Never delete the working WordPress directory.
+The release was pushed to `main`, passed [GitHub validation](https://github.com/insidewww/insidejob-client/actions/runs/39858093765), and deployed through Render. Both public domains serve the new asset `/assets/index-Cng2ydP6.js`, containing the native WordPress endpoint and no Labguy API or Cloudinary runtime dependency. The historical `insidejob-client_ula` repository is not serving a separate current deployment.
 
+Fresh off-server backups were verified before retirement at `/Users/jakubkanna/Documents/Backups/insidejob/2026-10-22-production-cutover/`: both databases, Labguy source/uploads/configuration, PM2 recovery files/logs, cron snapshots and WordPress configuration. Legacy project data was unchanged since migration. Original and final source references, checksum manifests, live browser reports and the retirement report are retained privately there. Temporary legacy migration, repair and server-side retirement copies were removed after verification; the WordPress dashboard backup remains available.
+
+Both domains passed production browser checks for Home, Projects, tags, gallery arrows/captions/focus, Bio, Contact, calendar, mobile overflow, Back button, missing pages and API failure recovery before removal. Live resizing across 767/768px and 991/992px passes without reload or lost gallery/Bio state. After removal, direct project links, both sitemaps, WordPress login and native APIs still respond correctly. All 469 image hashes and 51 published content records/timestamps are unchanged; discussion remains disabled.
 
 ## Deployment configuration
 
-The repository deployment workflow requires `VITE_WP_API_URL=https://host951157.xce.pl/wp-json/wp/v2` and a `SITE_URL` variable containing the chosen production frontend origin. It accepts the previous `BASE_URL` secret as a fallback. Do not store WordPress login credentials in repository variables or frontend configuration. The CNAME hostname is derived from the validated origin.
+Render builds from the connected `main` branch. The public defaults in `scripts/config.mjs` allow a clean checkout to build without `.env` files or new dashboard variables. Optional `VITE_WP_API_URL` and `BASE_URL` overrides are validated; the frontend embeds only the resolved public endpoint. The legacy GitHub Pages workflow was replaced with validation and monthly sitemap refresh; it no longer publishes to Pages or changes CNAME/DNS.
 
-Before the first production run:
+For future releases:
 
-1. Review the local client and confirm the intended frontend domain. Set the repository variables above.
-2. Take and verify a fresh WordPress database/files backup and reconcile any newer legacy content.
-3. Set `INSIDEJOB_FRONTEND_URL` in the working WordPress configuration to the selected frontend origin so admin View links open production. It intentionally remains `http://localhost:5178` during local review.
-4. Keep the headless WordPress backend excluded from indexing (`blog_public=0`). Review the frontend sitemap and retained mixed canonical domains separately.
-5. Run tests, lint, sitemap generation and the production build. Confirm the generated `404.html` is identical to `index.html` for direct SPA links on GitHub Pages.
-6. Deploy the reviewed branch, check direct project/page links on the public domain, and retain Labguy until acceptance.
+1. Take and verify database/files backups and review any newer content edits.
+2. Run tests, lint, sitemap generation and build. Validate a clean checkout when build configuration changes.
+3. Push the reviewed source to `main`, then verify GitHub checks, the live asset and public routes on both domains. Render’s existing SPA rewrite supports direct page/project URLs.
+4. Keep the backend excluded from indexing (`blog_public=0`) and retain the chosen canonical-domain behavior unless a separate SEO change is approved.
+5. Keep `INSIDEJOB_FRONTEND_URL` at the production origin. Local frontend development uses the hosted WordPress backend without changing that constant.
 
-The pre-deployment review snapshot is stored privately at `/Users/jakubkanna/Documents/Backups/insidejob/2026-10-22-predeployment/`. Its checksum manifest and compressed SQL were verified. The unused agent staging installation and installer ZIPs were removed; the active WordPress directory and Labguy remain separate.
-
+Documentation-only completion commits may use Render’s [supported skip phrase](https://render.com/docs/deploys#skipping-an-auto-deploy), `[skip render]`, to preserve the tested deployment. No credentials, owner instructions, screenshots or PDFs belong in this repository.
 
 ## Review results — 22 October 2026
 
@@ -84,7 +86,7 @@ The pre-deployment review snapshot is stored privately at `/Users/jakubkanna/Doc
 - The sitemap contains 36 unique published URLs. The SPA fallback matches the built index. The legacy API and existing public frontend return HTTP 200.
 - Credentials are absent from repository source and build output; `.env` remains ignored. Owner instructions, screenshots, credentials and the PDF remain outside the repository.
 
-This is a local/hosting review, not a completed production deployment. Repository variables and the final `INSIDEJOB_FRONTEND_URL` still need confirmation for cutover; the revised GitHub workflow has not run remotely.
+This section records the earlier review before production deployment. The completed production state and release evidence are documented above.
 
 
 ## Metadata and discussion update — 22 October 2026
