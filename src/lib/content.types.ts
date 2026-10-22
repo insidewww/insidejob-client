@@ -2,6 +2,7 @@ export interface ImageRefSchema {
   mediaType: 'IMAGE';
   id?: number;
   src: string;
+  fullSrc?: string;
   srcSet?: string;
   sizes?: string;
   alt?: string;

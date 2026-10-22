@@ -28,6 +28,7 @@ Open **http://localhost:5178**. WordPress runs on Hostido; no local Docker or da
 - Standard Tags provide the bracketed labels, including GROUP EXHIBITION. No custom taxonomy is used.
 - Standard Pages hold Home, Bio, Contact, Projects and Current (slug `calendar`), plus any additional public pages.
 - Text, images, galleries, related links and YouTube/Vimeo embeds use core blocks. Bio uses core Details blocks, rendered as the existing accordion.
+- Inside Job Content preserves images up to 4096px without WordPress large-image scaling. Core Image blocks expose the native original URL through `data-full-url`; responsive page previews keep their existing sizes, while the fullscreen gallery loads the original. The current hosting upload limit is 512 MB per file.
 - ACF Free provides venue, subtitle, partial event dates, optional portfolio PDF and image brightness. Definitions are versioned in [insidejob-content.php](wordpress/insidejob-content/insidejob-content.php).
 - Hostido provides automatic hosting backups. Backup Migration 2.1.7 is also installed for manual, combined database-and-files ZIP exports; archives use the plugin’s protected directory and are downloaded through the authenticated admin session.
 

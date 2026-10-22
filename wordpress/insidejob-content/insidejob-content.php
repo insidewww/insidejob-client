@@ -2,9 +2,12 @@
 /**
  * Plugin Name: Inside Job Content
  * Description: ACF fields, native block patterns and routing for the Inside Job React frontend.
- * Version: 1.0.1
+ * Version: 1.0.2
  */
 defined('ABSPATH') || exit;
+
+// Preserve UHD/DCI 4K uploads as WordPress's full image size.
+add_filter('big_image_size_threshold', static fn() => 4096);
 
 add_action('acf/init', function () {
     $field = static function ($name, $label, $type, $extra = []) {
@@ -133,7 +136,17 @@ add_filter('wp_theme_json_data_theme', function ($data) {
 });
 add_filter('render_block_core/image', function ($html, $block) {
     $id = (int)($block['attrs']['id'] ?? 0);
-    if (!$id || stripos($html, '<figcaption') !== false) return $html;
+    if (!$id) return $html;
+    // Keep normal responsive previews; the gallery uses the preserved original.
+    $original_url = wp_get_original_image_url($id) ?: wp_get_attachment_image_url($id, 'full');
+    if ($original_url) {
+        $tags = new WP_HTML_Tag_Processor($html);
+        if ($tags->next_tag('IMG')) {
+            $tags->set_attribute('data-full-url', $original_url);
+            $html = $tags->get_updated_html();
+        }
+    }
+    if (stripos($html, '<figcaption') !== false) return $html;
     $caption = wp_get_attachment_caption($id) ?: get_post_field('post_content', $id);
     return $caption ? str_replace('</figure>', '<figcaption class="wp-element-caption">' . wp_kses_post($caption) . '</figcaption></figure>', $html) : $html;
 }, 10, 2);

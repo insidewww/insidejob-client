@@ -17,6 +17,7 @@ export default function ImageGallery({ images, index, onChange, onClose }: {
     return () => document.removeEventListener('keydown', key);
   }, [index, images.length, onChange]);
   const image = index === null ? null : images[index] || null;
+  const source = image?.fullSrc || image?.src;
   const move = (step: number) => { if (index !== null) onChange((index + step + images.length) % images.length); };
   return <Modal show={image !== null} onHide={onClose} fullscreen restoreFocus aria-label="Project image gallery"
     contentClassName="bg-white text-dark border-0 rounded-0">
@@ -24,7 +25,7 @@ export default function ImageGallery({ images, index, onChange, onClose }: {
       <button type="button" className="btn text-dark bg-transparent border-0 position-absolute top-0 end-0 m-2 z-3" onClick={onClose} aria-label="Close gallery"><i className="bi bi-x-lg" /></button>
       {image && <figure className="d-flex flex-column w-100 h-100 m-0 align-items-center justify-content-center" aria-live="polite">
         <div className="w-100 flex-grow-1 d-flex justify-content-center align-items-center overflow-hidden" style={{ minHeight: 0 }}>
-          {failed ? <p role="status">This image could not be loaded.</p> : <img key={image.src} src={image.src} alt={image.alt || ''} className="w-100 h-100 object-fit-contain" onError={() => setFailed(true)} />}
+          {failed ? <p role="status">This image could not be loaded.</p> : <img key={source} src={source} alt={image.alt || ''} className="w-100 h-100 object-fit-contain" onError={() => setFailed(true)} />}
         </div>
         {image.description && <figcaption className="text-center small pt-3 px-4 flex-shrink-0 overflow-auto" style={{ maxHeight: '25vh' }}>{image.description}</figcaption>}
       </figure>}

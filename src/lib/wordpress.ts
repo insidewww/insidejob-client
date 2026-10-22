@@ -19,7 +19,7 @@ const documentFor = (html: string) => new DOMParser().parseFromString(html, 'tex
 const text = (html: string) => (documentFor(html).body.textContent || '').replace(/\s+/g, ' ').trim();
 export function imageFromElement(img: HTMLImageElement): ImageRefSchema {
   return {
-    mediaType: 'IMAGE', src: img.src, srcSet: img.srcset || undefined, sizes: img.sizes || '(max-width: 767px) 100vw, 50vw',
+    mediaType: 'IMAGE', src: img.src, fullSrc: img.dataset.fullUrl || undefined, srcSet: img.srcset || undefined, sizes: img.sizes || '(max-width: 767px) 100vw, 50vw',
     alt: img.alt, width: Number(img.getAttribute('width')) || undefined, height: Number(img.getAttribute('height')) || undefined,
     description: img.closest('figure')?.querySelector('figcaption')?.textContent || '',
   };
