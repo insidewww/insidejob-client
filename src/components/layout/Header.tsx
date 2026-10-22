@@ -1,17 +1,17 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { LinkContainer } from "react-router-bootstrap";
-import { GeneralContext } from "../../contexts/GeneralContext";
-import { Helmet } from "react-helmet";
-import { isMobile } from "../../utils/helpers";
+import { useSite } from "../../lib/useSite";
+import { useIsMobile } from "../../lib/useIsMobile";
 import { useLocation } from "react-router-dom";
 
 function Header() {
-  const { preferences } = useContext(GeneralContext);
-  const artists_name = preferences ? preferences.artists_name : "";
+  const isMobile = useIsMobile();
+  const { preferences, site } = useSite();
+  const artists_name = site?.name || "";
   const isBright = preferences?.homepage_media?.isBright;
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -30,10 +30,7 @@ function Header() {
 
   return (
     <header className="position-fixed w-100 top-0 start-0 px-2 z-3 font-insidejob-ext">
-      <Helmet>
-        <title>{artists_name}</title>
-        <meta name="author" content={artists_name} />
-      </Helmet>
+
 
       <Navbar expand="lg">
         <Container fluid>
@@ -53,9 +50,10 @@ function Header() {
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"
             placement="end"
+            responsive="lg"
             show={showOffcanvas}
             onHide={handleClose}
-            className="insidejob-offcanvas"
+            className="insidejob-offcanvas w-100"
             backdrop={false}
           >
             <Offcanvas.Header closeButton>
@@ -65,7 +63,7 @@ function Header() {
             </Offcanvas.Header>
 
             <Offcanvas.Body
-              className={isMobile() ? offBodyMobileClass : offBodyClass}
+              className={isMobile ? offBodyMobileClass : offBodyClass}
             >
               <Nav>
                 <LinkContainer to="calendar">

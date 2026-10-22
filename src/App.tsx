@@ -5,11 +5,10 @@ import Main from "./components/layout/Main";
 import { Outlet, useLocation } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "./components/Fallback";
-import { useContext } from "react";
-import { GeneralContext } from "./contexts/GeneralContext";
+import { useSite } from "./lib/useSite";
 
 function App() {
-  const { preferences } = useContext(GeneralContext);
+  const { preferences } = useSite();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 

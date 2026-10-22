@@ -72,3 +72,19 @@ span p {
 @import "./accordion.scss";
 @import "./offcanvas.scss";
 @import "./navbar.scss";
+
+// Native block markup follows the existing site typography and media column.
+.wp-content {
+  figure.wp-block-image, figure.wp-block-gallery, figure.wp-block-embed {
+    margin: 0;
+    width: 100%;
+  }
+  figure.wp-block-image figcaption, figure.wp-block-embed figcaption {
+    font-size: .875em;
+    padding: .5rem 0;
+    margin: 0;
+    text-align: center;
+  }
+  .wp-block-gallery > .wp-block-image { display: block; width: 100%; }
+}
+.bio-intro > figure.wp-block-image { padding: 0 .5rem 3rem; }

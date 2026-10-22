@@ -5,6 +5,11 @@ $btn-transition:
   box-shadow 0.15s ease-in-out;
 
 .btn-insidejob {
+  --bs-btn-active-bg: black;
+  --bs-btn-active-color: #{$ijoblight};
+  --bs-btn-hover-bg: black;
+  --bs-btn-hover-color: #{$ijoblight};
+  --bs-btn-focus-shadow-rgb: 53, 53, 48;
   position: relative;
   color: $ijoblight;
   background-color: $ijobdark;
@@ -15,7 +20,9 @@ $btn-transition:
   transition: $btn-transition; /* Transition for the button */
 }
 
-.btn-insidejob:hover {
+.btn-insidejob:hover,
+.btn-insidejob:focus-visible,
+.btn-insidejob:active {
   background-color: black;
   color: $ijoblight;
 }
@@ -27,8 +34,7 @@ $btn-transition:
   top: 0;
   width: 20px; /* Width of the trapeze */
   height: 100%;
-  background-color: $ijobdark;
-  transition: background-color 0.15s ease-in-out; /* Ensure transition is applied to pseudo-elements */
+  background-color: inherit;
 }
 
 .btn-insidejob::before {
@@ -39,10 +45,6 @@ $btn-transition:
 .btn-insidejob::after {
   right: -4.5px; /* Position the trapeze on the right */
   clip-path: polygon(75% 0, 100% 25%, 100% 75%, 75% 100%);
-}
-.btn-insidejob:hover::after,
-.btn-insidejob:hover::before {
-  background-color: black; /* Transition the color of the trapezoids */
 }
 
 .btn-link {

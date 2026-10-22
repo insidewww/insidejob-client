@@ -2,12 +2,15 @@ import { Col } from "react-bootstrap";
 import Layout from "../../components/layout/Layout";
 import { useLoaderData } from "react-router-dom";
 import CalendarListItem from "../../components/calendar/CalendarListItem";
-import { isExpired, isMobile, isUpcoming } from "../../utils/helpers";
+import { isExpired, isUpcoming } from "../../utils/helpers";
+import { useIsMobile } from "../../lib/useIsMobile";
 import { Project } from "../Projects";
-import { Helmet } from "react-helmet";
+import type { PageContent } from "../../lib/content.types";
+import WordPressContent from "../../components/wordpress/WordPressContent";
 
 export default function Calendar() {
-  const projects = useLoaderData() as Project[];
+  const isMobile = useIsMobile();
+  const { projects, page } = useLoaderData() as { projects: Project[]; page: PageContent };
 
   // Separate projects into current and upcoming
   const currentProjects = projects.filter(
@@ -23,7 +26,7 @@ export default function Calendar() {
   // ProjectList component that maps over projects and returns ProjectDisplay components
   const ProjectList = ({ projects }: { projects: Project[] }) => {
     return (
-      <div className={isMobile() ? projectListMobileClass : projectListClass}>
+      <div className={isMobile ? projectListMobileClass : projectListClass}>
         {projects.map((project) => (
           <CalendarListItem key={project.id} project={project} />
         ))}
@@ -33,11 +36,9 @@ export default function Calendar() {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://www.michalknychaus.com/calendar" />
-      </Helmet>
-      <Layout title="Current">
+      <Layout title={page.title} description={page.description} image={page.image} canonical="https://www.michalknychaus.com/calendar">
         <>
+          {page.html && <Col xs={12}><WordPressContent html={page.html} /></Col>}
           <Col xs={12} md={6}>
             <h6 className="text-center font-insidejob-ext">Ongoing</h6>
             <ProjectList projects={currentProjects} />

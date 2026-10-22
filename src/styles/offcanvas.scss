@@ -1,7 +1,7 @@
 /* Header.css */
 
 /* Ensure Offcanvas behaves normally on larger screens (desktop) */
-.insidejob-offcanvas.offcanvas {
+.insidejob-offcanvas {
   transform: none !important; /* Prevent slide animation */
   transition: none !important; /* Disable transition */
 }
@@ -13,7 +13,7 @@
 }
 @media (min-width: 992px) {
   /* On desktop (lg or above), reset to default Offcanvas behavior */
-  .insidejob-offcanvas.offcanvas {
+  .insidejob-offcanvas {
     position: static !important; /* Reset position on larger screens */
     transform: none !important; /* Make sure it doesn't slide */
     transition: none !important; /* Disable animation on desktop */

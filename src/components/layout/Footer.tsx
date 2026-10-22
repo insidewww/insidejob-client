@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
-import { GeneralContext } from "../../contexts/GeneralContext";
+import { useSite } from "../../lib/useSite";
 
 export default function Footer() {
-  const { preferences } = useContext(GeneralContext);
-  const artists_name = preferences ? preferences.artists_name : "";
+  const { site } = useSite();
+  const artists_name = site?.name || "";
   const currentYear = new Date().getFullYear();
 
   return (

@@ -1,5 +1,5 @@
 import { Project } from "../../pages/Projects";
-import { TagSchema, UrlSchema } from "@jakubkanna/labguy-front-schema";
+import { TagSchema, UrlSchema } from "../../lib/content.types";
 import { parseDate } from "../../utils/helpers";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
@@ -30,7 +30,7 @@ export default function CalendarListItem({ project }: { project: Project }) {
     return (
       <div className="d-flex flex-wrap gap-2">
         {/* Check if the project is published and render the internal link */}
-        {general.published && general.slug && (
+        {project.inProjects && general.published && general.slug && (
           <Link to={`/projects/${general.slug}`}>
             <i className="bi bi-link p-1 fs-5"></i>{" "}
             {/* Internal project link icon */}

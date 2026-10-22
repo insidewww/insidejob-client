@@ -1,104 +1,37 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url"; // Import fileURLToPath to convert URL to path
-import dotenv from "dotenv";
-dotenv.config();
-
-// Static routes (no dynamic slugs)
-const staticRoutes = ["/", "/bio", "/contact", "/works", "/projects"];
-
-// Assuming you have a function to fetch dynamic slugs for posts, projects, etc.
-const fetchSlugs = async (routeType) => {
-  const apiUrl = process.env.VITE_SERVER_API_URL;
-
-  // Ensure the API URL is defined
-  if (!apiUrl) {
-    throw new Error(
-      "VITE_SERVER_API_URL is not defined in environment variables"
-    );
+import { writeFile } from 'node:fs/promises';
+import dotenv from 'dotenv';
+import { readSiteConfig } from '../../scripts/config.mjs';
+dotenv.config({ path: ['.env.local', '.env'] });
+const { api, base } = readSiteConfig(process.env);
+async function all(resource, params = {}) {
+  const result = [];
+  for (let page = 1, total = 1; page <= total; page++) {
+    const query = new URLSearchParams({ ...params, status: 'publish', per_page: '100', page: String(page) });
+    const response = await fetch(`${api}/${resource}?${query}`);
+    if (!response.ok) throw new Error(`Sitemap fetch failed: ${response.status}`);
+    total = Number(response.headers.get('X-WP-TotalPages') || 1);
+    result.push(...await response.json());
   }
-
-  try {
-    // Define the endpoint for fetching general sections
-    const endpoint = `${apiUrl}/general`;
-
-    // Perform the fetch request
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json", // Set the expected response content type
-      },
-    });
-
-    // Check if the response is okay (status 200-299)
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch data from ${endpoint}: ${response.statusText}`
-      );
-    }
-
-    // Parse the response JSON
-    const data = await response.json();
-
-    // Filter by the specified routeType and extract slugs
-    const slugs = data
-      .filter((item) => item[routeType]) // Check if the routeType key exists in the item
-      .map((item) => item.slug); // Extract the slug property
-
-    return slugs;
-  } catch (error) {
-    console.error("Error fetching slugs:", error);
-    return []; // Return an empty array on error
-  }
+  return result;
+}
+const [pages, posts, categoriesResponse] = await Promise.all([all('pages'), all('posts'), fetch(`${api}/categories?per_page=100`)]);
+if (!categoriesResponse.ok) throw new Error('Cannot resolve categories.');
+const categories = await categoriesResponse.json();
+const projects = categories.find(category => category.slug === 'projects')?.id;
+const calendar = categories.find(category => category.slug === 'calendar')?.id;
+if (!projects || !calendar) throw new Error('Create Projects and Calendar categories first.');
+const staticUrls = {
+  home: 'https://www.michalknychaus.com/', bio: 'https://www.ulalucinska.com/bio',
+  contact: 'https://ulalucinska.com/contact', projects: 'https://ulalucinska.com/projects',
+  calendar: 'https://www.michalknychaus.com/calendar',
 };
-
-// Function to generate the sitemap XML
-const generateSitemap = async () => {
-  // Get dynamic slugs
-  const postSlugs = await fetchSlugs("post");
-  const projectSlugs = await fetchSlugs("project");
-  const workSlugs = await fetchSlugs("work");
-
-  // Get the base URL from environment variables
-  const baseUrl = process.env.BASE_URL;
-
-  // Start sitemap structure
-  let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-
-  // Add static routes
-  staticRoutes.forEach((route) => {
-    sitemap += `  <url>\n    <loc>${baseUrl}${route}</loc>\n  </url>\n`;
-  });
-
-  // Add dynamic routes for posts
-  postSlugs.forEach((slug) => {
-    sitemap += `  <url>\n    <loc>${baseUrl}/${slug}</loc>\n  </url>\n`;
-  });
-
-  // Add dynamic routes for projects
-  projectSlugs.forEach((slug) => {
-    sitemap += `  <url>\n    <loc>${baseUrl}/projects/${slug}</loc>\n  </url>\n`;
-  });
-
-  // Add dynamic routes for works
-  workSlugs.forEach((slug) => {
-    sitemap += `  <url>\n    <loc>${baseUrl}/works/${slug}</loc>\n  </url>\n`;
-  });
-
-  // Close URL set
-  sitemap += "</urlset>\n";
-
-  // Get the current directory path using import.meta.url (ES Module way)
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-  // Write the sitemap to a file
-  fs.writeFileSync(
-    path.join(__dirname, "../../", "public", "sitemap.xml"),
-    sitemap
-  );
-  console.log("Sitemap generated: " + "public/sitemap.xml");
-};
-
-// Call the function to generate the sitemap
-generateSitemap();
+const urls = pages.map(page => staticUrls[page.slug] || `${base}/${page.slug}`);
+for (const post of posts) {
+  if (post.categories.includes(projects)) {
+    const day = new Date(`${post.modified_gmt || post.date_gmt}Z`).getDate();
+    urls.push(`${day % 2 === 0 ? 'https://ulalucinska.com' : 'https://michalnychaus.com'}/projects/${post.slug}`);
+  } else if (!post.categories.includes(calendar)) urls.push(`${base}/${post.slug}`);
+}
+const escape = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+await writeFile(new URL('../../public/sitemap.xml', import.meta.url), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...new Set(urls)].map(url => `  <url><loc>${escape(url)}</loc></url>`).join('\n')}\n</urlset>\n`);
+console.log(`Generated sitemap with ${new Set(urls).size} published URLs.`);

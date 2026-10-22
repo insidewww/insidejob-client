@@ -1,19 +1,11 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { viteStaticCopy } from "vite-plugin-static-copy";
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
+import { readSiteConfig } from './scripts/config.mjs';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    viteStaticCopy({
-      targets: [
-        {
-          src: "dist/index.html",
-          dest: "",
-          rename: "404.html",
-        },
-      ],
-    }),
-  ],
+export default defineConfig(({ mode }) => {
+  const { api } = readSiteConfig({ ...loadEnv(mode, process.cwd(), ''), ...process.env });
+  return {
+    plugins: [react()],
+    define: { 'import.meta.env.VITE_WP_API_URL': JSON.stringify(api) },
+  };
 });

@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { ImageRefSchema } from "@jakubkanna/labguy-front-schema";
-import { getImageAttributes } from "../utils/utils";
-import { Fade } from "react-bootstrap";
+import { useState } from "react";
+import type { ImageRefSchema } from "../lib/content.types";
 
 interface ImageProps {
   imageref: ImageRefSchema;
@@ -10,54 +8,7 @@ interface ImageProps {
 }
 
 export default function Image({ imageref, className }: ImageProps) {
-  const [imgSrc, setImgSrc] = useState<string | undefined>("");
-  const [loading, setLoading] = useState(true);
-  const [isImageValid, setIsImageValid] = useState<boolean>(true);
-  const { height, width } = imageref;
-
-  const { src, srcSet, sizes, alt } = imageref
-    ? getImageAttributes(imageref)
-    : { src: "", srcSet: "", sizes: "", alt: "" };
-
-  useEffect(() => {
-    if (src) {
-      // Validate the image URL
-      fetch(src)
-        .then((response) => {
-          if (response.ok) {
-            // If the response is OK, set the image source
-            setImgSrc(src);
-            setIsImageValid(true);
-          } else {
-            setIsImageValid(false);
-          }
-        })
-        .catch(() => {
-          setIsImageValid(false);
-        });
-    }
-  }, [src]);
-
-  if (!isImageValid) {
-    return;
-  }
-
-  return (
-    <>
-      {loading && (
-        <img height={height} width={width} className="img-fluid"></img>
-      )}
-      <Fade in={!loading} appear={true} timeout={500}>
-        <img
-          src={imgSrc}
-          srcSet={srcSet}
-          sizes={sizes}
-          alt={alt || ""}
-          style={!loading ? {} : { display: `none` }}
-          onLoad={() => setLoading(false)}
-          className={className || "img-fluid"}
-        />
-      </Fade>
-    </>
-  );
+  const [failed, setFailed] = useState(false);
+  if (failed) return <span role="status">Image unavailable.</span>;
+  return <img src={imageref.src} srcSet={imageref.srcSet} sizes={imageref.sizes || '(max-width: 767px) 100vw, 50vw'} alt={imageref.alt || ''} width={imageref.width} height={imageref.height} onError={() => setFailed(true)} className={className || 'img-fluid'} />;
 }

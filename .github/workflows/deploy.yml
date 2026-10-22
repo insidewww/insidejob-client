@@ -1,52 +1,50 @@
-name: Deploy to GitHub Pages
+name: Validate frontend
 
 on:
-  # Trigger the workflow on push to the main branch
   push:
-    branches:
-      - main
-  # Allow manual trigger
+    branches: [main]
+  pull_request:
   workflow_dispatch:
-  # Trigger after the deploy workflow completes
-  workflow_run:
-    workflows: ["Generate Sitemap"]
-    types:
-      - completed
+  schedule:
+    # Refresh the published sitemap through Render's connected main branch.
+    - cron: "0 0 1 * *"
+
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Permissions to write to the repository
-      pages: write # Permissions to deploy to GitHub Pages
-
+      contents: write
+    env:
+      VITE_WP_API_URL: ${{ vars.VITE_WP_API_URL }}
+      BASE_URL: ${{ vars.SITE_URL || secrets.BASE_URL }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          fetch-depth: 0 # Fetch all history to avoid issues with commit history
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "22" # Use the appropriate Node.js version for your project
-
-      - name: Install dependencies
+          node-version: "24"
+          cache: npm
+      - name: Validate public configuration
         run: |
-          npm install  # Install dependencies, adjust based on your package manager
-
-      - name: Create .env file for build
+          node --input-type=module <<'NODE'
+          import { readSiteConfig } from './scripts/config.mjs';
+          readSiteConfig(process.env);
+          NODE
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run sitemap
+      - run: npm run build
+      - name: Publish the monthly sitemap update
+        if: github.event_name == 'schedule'
         run: |
-          echo "VITE_SERVER_API_URL=${{ secrets.VITE_SERVER_API_URL }}" >> .env
-          echo "VITE_CLD_CLOUD_NAME=${{ secrets.VITE_CLD_CLOUD_NAME }}" >> .env
-
-      - name: Build the project
-        run: |
-          npm run build  # Replace with the appropriate build command for your project
-
-          
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Use the GitHub token to authenticate the deployment
-          publish_dir: ./dist # Directory containing the built files (adjust if needed)
-          cname: ${{secrets.BASE_URL}}
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/sitemap.xml
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh WordPress sitemap"
+            git push
+          fi

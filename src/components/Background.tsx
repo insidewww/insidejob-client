@@ -1,32 +1,6 @@
-import Image from "./Image";
-import Video from "./Video";
-import { isImage, isVideo, MediaRef } from "../utils/helpers";
-import {
-  ImageRefSchema,
-  VideoRefSchema,
-} from "@jakubkanna/labguy-front-schema";
+import Image from './Image';
+import type { ImageRefSchema } from '../lib/content.types';
 
-interface BackgroundProps {
-  media?: MediaRef;
+export default function Background({ media }: { media?: ImageRefSchema }) {
+  return media ? <Image className="w-100 h-100 object-fit-cover" imageref={media} /> : null;
 }
-
-const Background: React.FC<BackgroundProps> = ({ media }) => {
-  if (!media) return null;
-
-  if (isImage(media)) {
-    return (
-      <Image
-        className="w-100 h-100 object-fit-cover"
-        imageref={media as ImageRefSchema}
-      />
-    );
-  }
-
-  if (isVideo(media)) {
-    return <Video videoref={media as VideoRefSchema} />;
-  }
-
-  return null;
-};
-
-export default Background;

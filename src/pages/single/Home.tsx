@@ -1,19 +1,20 @@
-import { useContext } from "react";
-import { GeneralContext } from "../../contexts/GeneralContext";
+import { useSite } from "../../lib/useSite";
 import { Button, Col, Row } from "react-bootstrap";
-import { UrlSchema } from "@jakubkanna/labguy-front-schema";
+import { UrlSchema } from "../../lib/content.types";
 import Background from "../../components/Background";
 import Layout from "../../components/layout/Layout";
-import { Helmet } from "react-helmet";
+import WordPressContent from "../../components/wordpress/WordPressContent";
 
 export default function Homepage() {
-  const { preferences } = useContext(GeneralContext);
+  const { preferences } = useSite();
 
   if (!preferences) return null;
 
   const {
+    homepage_description,
     homepage_heading,
     homepage_subheading,
+    homepage_content,
     homepage_media,
     homepage_urls,
   } = preferences;
@@ -32,10 +33,7 @@ export default function Homepage() {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://www.michalknychaus.com/" />
-      </Helmet>
-      <Layout title="">
+      <Layout title="" description={homepage_description} image={homepage_media?.src} canonical="https://www.michalknychaus.com/">
         <Col className="d-flex flex-column justify-content-center align-items-center h-100 position-relative">
           <div className="position-absolute top-0 start-0 w-100 h-100 z-0">
             <Backdrop
@@ -50,12 +48,12 @@ export default function Homepage() {
             <Col className="d-flex flex-column align-items-center z-2">
               {homepage_heading && (
                 <h1 className="display-1 mb-3 fw-normal text-center">
-                  {homepage_heading}
+                  <WordPressContent html={homepage_heading} inline />
                 </h1>
               )}{" "}
               {homepage_subheading && (
                 <h2 className="h5 mb-4 font-insidejob-ext text-center">
-                  {homepage_subheading}
+                  <WordPressContent html={homepage_subheading} inline />
                 </h2>
               )}{" "}
             </Col>
@@ -83,6 +81,7 @@ export default function Homepage() {
               </div>
             </Col>
           </Row>
+          {homepage_content && <Row className="z-2"><Col><WordPressContent html={homepage_content} /></Col></Row>}
         </Col>
       </Layout>
     </>

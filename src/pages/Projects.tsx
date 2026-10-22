@@ -1,36 +1,20 @@
 import {
   useLoaderData,
-  useParams,
-  Outlet,
   Link,
   useNavigate,
 } from "react-router-dom";
-import {
-  GeneralSectionSchema,
-  ImageRefSchema,
-  ProjectSchema,
-  TagSchema,
-  UrlSchema,
-  VideoRefSchema,
-} from "@jakubkanna/labguy-front-schema";
+import type { ImageRefSchema, Project as ProjectType, PageContent } from '../lib/content.types';
+export type Project = ProjectType;
 import { Button, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import Image from "../components/Image";
-import { isMobile } from "../utils/helpers";
-import { Helmet } from "react-helmet";
-
-export interface Project extends ProjectSchema {
-  general: GeneralSectionSchema & { tags: TagSchema[] };
-  media: (ImageRefSchema | VideoRefSchema)[];
-  urls: UrlSchema[];
-  works: unknown[];
-  cover: ImageRefSchema;
-}
+import { useIsMobile } from "../lib/useIsMobile";
+import WordPressContent from "../components/wordpress/WordPressContent";
 
 export default function Projects() {
-  const allProjects = useLoaderData() as Project[];
-  const { slug } = useParams();
+  const isMobile = useIsMobile();
+  const { projects: allProjects, page } = useLoaderData() as { projects: Project[]; page: PageContent };
   const navigate = useNavigate();
   // Consolidated state for preview image and project slug
   const [preview, setPreview] = useState<{
@@ -54,7 +38,6 @@ export default function Projects() {
     }
   }, [allProjects]); // Trigger the effect when allProjects changes
 
-  if (!allProjects.length) return null;
 
   // Extract unique years from filteredProjects and sort in descending order
   const filteredProjects = allProjects.filter((proj) => proj.general.published);
@@ -111,7 +94,7 @@ export default function Projects() {
       <Row className="py-2">
         <Button
           onMouseEnter={() => handleMouseEnter(project)}
-          onMouseDown={() => navigate(link)}
+          onClick={() => navigate(link)}
           variant="link"
         >
           <h4 className="project-item fs-4">{project.general.title}</h4>
@@ -120,15 +103,11 @@ export default function Projects() {
     );
   };
 
-  return slug ? (
-    <Outlet />
-  ) : (
+  return (
     <>
-      <Helmet>
-        <link rel="canonical" href={`https://ulalucinska.com/projects`} />
-      </Helmet>
-      <Layout title="Projects">
+      <Layout title={page.title} description={page.description} image={page.image} canonical="https://ulalucinska.com/projects">
         <Col xs={12} md={6} className="d-flex flex-column mh-100 px-md-5">
+          <WordPressContent html={page.html} />
           <Row>
             <h6 className="text-center font-insidejob-ext">
               Selected Projects
@@ -154,7 +133,7 @@ export default function Projects() {
             </Col>
           </Row>
         </Col>
-        {!isMobile() && preview.image && preview.slug && (
+        {!isMobile && preview.image && preview.slug && (
           <Col xs={12} md={6} className="mh-100">
             <Link to={`/projects/${preview.slug || "#"}`}>
               <Image

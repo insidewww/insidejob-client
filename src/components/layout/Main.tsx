@@ -16,30 +16,27 @@ export default function Main({ children }: { children: ReactNode }) {
   // State to manage fade-in effect
   const [fadeIn, setFadeIn] = useState(true);
 
-  // Calculate header and footer padding on component mount
+  // Keep fixed header/footer spacing in sync with resizing and loaded fonts.
   useEffect(() => {
-    const getElementHeight = (element: HTMLElement | null): number => {
+    const header = document.querySelector('header');
+    const footer = document.querySelector('footer');
+    const getElementHeight = (element: HTMLElement | null) => {
       if (!element) return 0;
       const style = window.getComputedStyle(element);
-      return (
-        element.clientHeight +
-        parseFloat(style.marginTop) +
-        parseFloat(style.marginBottom) +
-        parseFloat(style.paddingTop) +
-        parseFloat(style.paddingBottom)
-      );
+      return element.getBoundingClientRect().height +
+        (parseFloat(style.marginTop) || 0) + (parseFloat(style.marginBottom) || 0);
     };
-
-    const header = document.querySelector("header");
-    const footer = document.querySelector("footer");
-
-    const headerHeight = getElementHeight(header);
-    const footerHeight = getElementHeight(footer);
-
-    setPadding({
-      paddingTop: headerHeight,
-      paddingBottom: footerHeight,
-    });
+    const updatePadding = () => {
+      const paddingTop = getElementHeight(header);
+      const paddingBottom = getElementHeight(footer);
+      setPadding(current => current.paddingTop === paddingTop && current.paddingBottom === paddingBottom
+        ? current : { paddingTop, paddingBottom });
+    };
+    const observer = new ResizeObserver(updatePadding);
+    if (header) observer.observe(header);
+    if (footer) observer.observe(footer);
+    updatePadding();
+    return () => observer.disconnect();
   }, []);
 
   // Handle fade-in logic based on navigation state

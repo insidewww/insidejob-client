@@ -23,5 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
-# labguy
+# Private configuration and migration archives
 .env
+.env.*
+!.env.example
+wordpress/private/
+*.sql
+*.sql.gz
+*.tar.gz
+
+*.tsbuildinfo

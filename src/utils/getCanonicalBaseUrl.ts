@@ -1,5 +1,4 @@
 import { Project as ProjectSchema } from "../pages/Projects";
-import { Work as WorkSchema } from "../pages/Works";
 
 /**
  * Generates a canonical base URL based on the day of the `updatedAt` or `createdAt` date.
@@ -15,7 +14,7 @@ import { Work as WorkSchema } from "../pages/Works";
  * @param {ProjectSchema} data - The project data object containing `general.updatedAt` and `general.createdAt`.
  * @returns {string} The canonical base URL based on the even or odd day of the relevant date.
  */
-export default function getCanonicalBaseUrl(data: ProjectSchema | WorkSchema) {
+export default function getCanonicalBaseUrl(data: ProjectSchema) {
   //
   const updatedAt = data.general.updatedAt;
   const createdAt = data.general.createdAt;

@@ -1,26 +1,22 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 import { Row } from "react-bootstrap";
-import { GeneralContext } from "../../contexts/GeneralContext";
-import { Helmet } from "react-helmet";
-import { isMobile } from "../../utils/helpers";
+import SiteMetadata, { type MetadataProps } from "../SiteMetadata";
+import { useIsMobile } from "../../lib/useIsMobile";
 
 export default function Layout({
   children,
   title,
   description,
-}: {
+  image,
+  canonical,
+  article,
+  metadataTitle,
+}: MetadataProps & {
   children: ReactNode;
   title?: string;
-  description?: string;
+  metadataTitle?: string;
 }) {
-  const { preferences } = useContext(GeneralContext);
-
-  const metadata = {
-    title: title || preferences?.artists_name || "Untitled",
-    description: description,
-    name: preferences?.artists_name,
-  };
-
+  const isMobile = useIsMobile();
   // Allow long single pages to scroll; ensure the flex child can shrink.
   const singlePageContentClass = "overflow-auto h-100 flex-grow-1 min-vh-0";
   const singlePageContentMobileClass =
@@ -28,12 +24,7 @@ export default function Layout({
 
   return (
     <>
-      <Helmet>
-        <title>{metadata.title}</title>
-        <meta name="title" content={metadata.title} />
-        <meta name="description" content={metadata.description} />
-        <meta name="author" content={metadata.name} />
-      </Helmet>
+      <SiteMetadata title={metadataTitle || title} description={description} image={image} canonical={canonical} article={article} />
       <Row id="SinglePageHeader" className="justify-content-center">
         {title && (
           <h6 className="text-center pb-3 font-insidejob-ext">{title}</h6>
@@ -42,7 +33,7 @@ export default function Layout({
       <Row
         id="SinglePageContent"
         className={
-          isMobile() ? singlePageContentMobileClass : singlePageContentClass
+          isMobile ? singlePageContentMobileClass : singlePageContentClass
         }
       >
         {children}
