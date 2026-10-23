@@ -24,6 +24,7 @@ export default function WordPressContent({ html, gallery = false, inline = false
       }
       return image;
     });
+    if (gallery) doc.querySelectorAll('figure.wp-block-image, figure.wp-block-embed').forEach(figure => figure.classList.add('mb-3'));
     doc.querySelectorAll('iframe').forEach(iframe => {
       let host = ''; try { host = new URL(iframe.src).hostname; } catch { iframe.remove(); return; }
       if (!/^(www\.)?(youtube(-nocookie)?\.com|player\.vimeo\.com)$/.test(host)) { iframe.remove(); return; }
