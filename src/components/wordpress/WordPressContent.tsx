@@ -24,7 +24,13 @@ export default function WordPressContent({ html, gallery = false, inline = false
       }
       return image;
     });
-    if (gallery) doc.querySelectorAll('figure.wp-block-image, figure.wp-block-embed').forEach(figure => figure.classList.add('mb-3'));
+    // Reserve the same single caption line for media without a description.
+    if (gallery) doc.querySelectorAll('figure.wp-block-image, figure.wp-block-embed').forEach(figure => {
+      let caption = figure.querySelector('figcaption');
+      if (caption?.textContent?.trim()) return;
+      if (!caption) { caption = doc.createElement('figcaption'); figure.append(caption); }
+      caption.textContent = '\u00a0'; caption.setAttribute('aria-hidden', 'true');
+    });
     doc.querySelectorAll('iframe').forEach(iframe => {
       let host = ''; try { host = new URL(iframe.src).hostname; } catch { iframe.remove(); return; }
       if (!/^(www\.)?(youtube(-nocookie)?\.com|player\.vimeo\.com)$/.test(host)) { iframe.remove(); return; }
