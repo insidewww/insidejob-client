@@ -1,12 +1,11 @@
 import {
   useLoaderData,
   Link,
-  useNavigate,
 } from "react-router-dom";
 import type { ImageRefSchema, Project as ProjectType, PageContent } from '../lib/content.types';
 export type Project = ProjectType;
-import { Button, Col, Row } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { Fragment, useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import Image from "../components/Image";
 import { useIsMobile } from "../lib/useIsMobile";
@@ -15,7 +14,6 @@ import WordPressContent from "../components/wordpress/WordPressContent";
 export default function Projects() {
   const isMobile = useIsMobile();
   const { projects: allProjects, page } = useLoaderData() as { projects: Project[]; page: PageContent };
-  const navigate = useNavigate();
   // Consolidated state for preview image and project slug
   const [preview, setPreview] = useState<{
     image: ImageRefSchema | null;
@@ -65,44 +63,6 @@ export default function Projects() {
     });
   };
 
-  // Group component for a specific year
-  const ProjectsGroup = ({
-    year,
-    projectsByYear,
-  }: {
-    year: number;
-    projectsByYear: Project[];
-  }) => (
-    <>
-      <Row>
-        <Col className="text-end">{year}</Col>
-      </Row>
-      <Row>
-        {projectsByYear.map((proj) => (
-          <Col xs={12} key={proj.id}>
-            <ProjectsListItem project={proj} />
-          </Col>
-        ))}
-      </Row>
-    </>
-  );
-
-  // Individual project list item
-  const ProjectsListItem = ({ project }: { project: Project }) => {
-    const link = `/projects/${project.general.slug}`;
-    return (
-      <Row className="py-2">
-        <Button
-          onMouseEnter={() => handleMouseEnter(project)}
-          onClick={() => navigate(link)}
-          variant="link"
-        >
-          <h4 className="project-item fs-4">{project.general.title}</h4>
-        </Button>
-      </Row>
-    );
-  };
-
   return (
     <>
       <Layout title={page.title} description={page.description} image={page.image} canonical="https://ulalucinska.com/projects">
@@ -124,11 +84,28 @@ export default function Projects() {
           <Row className="flex-grow-1 overflow-auto">
             <Col className="d-flex flex-column justify-content-end">
               {projectYears.map((year) => (
-                <ProjectsGroup
-                  key={year}
-                  year={year}
-                  projectsByYear={getProjectsByYear(year)}
-                />
+                <Fragment key={year}>
+                  <Row>
+                    <Col className="text-end">{year}</Col>
+                  </Row>
+                  <Row>
+                    {getProjectsByYear(year).map((project) => (
+                      <Col xs={12} key={project.id}>
+                        <Row className="py-2">
+                          <Link
+                            className="btn btn-link"
+                            to={`/projects/${project.general.slug}`}
+                            onMouseEnter={() => handleMouseEnter(project)}
+                          >
+                            <h4 className="project-item fs-4 mb-0">
+                              {project.general.title}
+                            </h4>
+                          </Link>
+                        </Row>
+                      </Col>
+                    ))}
+                  </Row>
+                </Fragment>
               ))}
             </Col>
           </Row>
